@@ -1,0 +1,25 @@
+<div class="login-container">
+  <form (ngSubmit)="onSubmit()">
+    <h2>Sign In</h2>
+
+    <input
+      #phoneNumber
+      type="tel"
+      placeholder="Phone number"
+      (input)="checkPhoneNumber(phoneNumber.value)"
+    />
+
+    <p class="error" [hidden]="isVisiblePhoneNumber">phone number not good</p>
+
+    <input
+      #password
+      type="password"
+      placeholder="Password"
+      (input)="checkPassword(password.value)"
+    />
+    <p class="error" [hidden]="isVisiblePassworde">password should be between 6-12</p>
+
+    <button [disabled]="isVisibleButton" type="submit">Login</button>
+    <button class="backHome-btn" routerLink="/home">Back to home</button>
+  </form>
+</div>

@@ -1,0 +1,65 @@
+$whatsapp-green: #25D366;
+$whatsapp-dark: #075E54;
+$background: #e5ddd5;
+
+.home-container {
+  height: 96vh;
+  background-color: $background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  direction: rtl;
+
+  .home-box {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+
+    h1 {
+      color: $whatsapp-dark;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    p {
+      margin-bottom: 2rem;
+      color: #555;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      button {
+        background-color: $whatsapp-green;
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+          background-color: darken($whatsapp-green, 5%);
+        }
+      }
+
+      .register-btn {
+        background-color: white;
+        color: $whatsapp-dark;
+        border: 2px solid $whatsapp-dark;
+
+        &:hover {
+          background-color: $whatsapp-dark;
+          color: white;
+        }
+      }
+    }
+  }
+}
