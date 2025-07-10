@@ -13,15 +13,7 @@
 
     <p class="error" [hidden]="isVisibleUserName">User name must be between 4-10</p>
 
-    <input
-      #phoneNumber
-      type="tel"
-      placeholder="Phone number"
-      (input)="checkPhoneNumber(phoneNumber.value)"
-    />
-
-    <p class="error" [hidden]="isVisiblePhoneNumber">phone number not good</p>
-
+    
     <input
       #password
       type="password"
@@ -31,6 +23,6 @@
     <p class="error" [hidden]="isVisiblePassworde">password must be between 6-12</p>
 
     <button [disabled]="isVisibleButton" type="submit">Register</button>
-    <button class="backHome-btn" routerLink="/home">Back to home</button>
+    <button class="backHome-btn" routerLink="/">Back to home</button>
   </form>
 </div>

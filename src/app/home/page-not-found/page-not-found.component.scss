@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #e9f1f7;
+  background-color: #f7f7f7;
 }
 
 .home-container,
@@ -17,14 +17,14 @@ body {
 .login-container .card,
 .login-container form {
   background-color: #ffffff;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
   text-align: center;
 }
 
@@ -36,8 +36,7 @@ h2 {
 
 p {
   margin: 0;
-  color: #555;
-  font-size: 1rem;
+  color: #666;
 }
 
 input {
@@ -62,7 +61,6 @@ input:focus {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 button {
@@ -73,12 +71,11 @@ button {
   cursor: pointer;
   background-color: #4a90e2;
   color: #fff;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s;
 }
 
 button:hover:not(:disabled) {
   background-color: #357ab8;
-  transform: translateY(-2px);
 }
 
 button:disabled {

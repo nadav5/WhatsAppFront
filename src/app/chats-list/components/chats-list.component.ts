@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./chats-list.component.scss']
 })
 export class ChatsListComponent {
-
+  userName: string= 'Nadav';
 }

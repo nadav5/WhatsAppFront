@@ -1,15 +1,14 @@
 <div class="login-container">
-  <form (ngSubmit)="onSubmit()">
+  <div class="card">
     <h2>Sign In</h2>
 
     <input
-      #phoneNumber
-      type="tel"
-      placeholder="Phone number"
-      (input)="checkPhoneNumber(phoneNumber.value)"
+      #userName
+      type="text"
+      placeholder="Name"
+      (input)="checkUserName(userName.value)"
     />
-
-    <p class="error" [hidden]="isVisiblePhoneNumber">phone number not good</p>
+    <p class="error" *ngIf="!isVisibleUserName">User name must be between 4-10</p>
 
     <input
       #password
@@ -17,9 +16,9 @@
       placeholder="Password"
       (input)="checkPassword(password.value)"
     />
-    <p class="error" [hidden]="isVisiblePassworde">password should be between 6-12</p>
+    <p class="error" *ngIf="!isVisiblePassworde">Password should be between 6-12</p>
 
-    <button [disabled]="isVisibleButton" type="submit">Login</button>
-    <button class="backHome-btn" routerLink="/home">Back to home</button>
-  </form>
+    <button routerLink="/chats" [disabled]="isVisibleButton" (click)="onLogin()">Login</button>
+    <button class="backHome-btn" routerLink="/">Back to home</button>
+  </div>
 </div>

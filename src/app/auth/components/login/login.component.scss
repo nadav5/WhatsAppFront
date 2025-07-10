@@ -1,81 +1,102 @@
-.error {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 4px;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
 }
 
+.home-container,
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #e5ddd5;
+}
 
-  form {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.home-box,
+.login-container .card,
+.login-container form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
 
-    h2 {
-      text-align: center;
-      color: #075e54;
-      margin-bottom: 1rem;
-    }
+h1,
+h2 {
+  margin: 0;
+  color: #333333;
+}
 
-    input {
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
+p {
+  margin: 0;
+  color: #666666;
+}
 
-      &:focus {
-        outline: none;
-        border-color: #25d366;
-      }
+input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
 
-      &.ng-invalid.ng-touched {
-        border-color: red;
-        background-color: #ffe5e5;
-      }
-    }
+input:focus {
+  outline: none;
+  border-color: #888;
+}
 
-    button {
-      padding: 0.75rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
+.error {
+  color: red;
+  font-size: 0.85rem;
+}
 
-      &:first-of-type {
-        background-color: #25d366;
-        color: white;
+.buttons,
+button {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
 
-        &:disabled {
-          background-color: #b5eac6;
-          cursor: not-allowed;
-        }
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: white;
+  transition: background-color 0.3s;
+}
 
-        &:hover:not(:disabled) {
-          background-color: #1da851;
-        }
-      }
+button:hover:not(:disabled) {
+  background-color: #357ab8;
+}
 
-      &.backHome-btn {
-        background-color: #f0f0f0;
-        color: #333;
+button:disabled {
+  background-color: #b0c4de;
+  cursor: not-allowed;
+}
 
-        &:hover {
-          background-color: #ddd;
-        }
-      }
-    }
-  }
+.register-btn {
+  background-color: #50e3c2;
+}
+
+.register-btn:hover {
+  background-color: #3cbfa1;
+}
+
+.backHome-btn {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.backHome-btn:hover {
+  background-color: #dddddd;
 }

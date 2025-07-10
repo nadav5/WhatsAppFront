@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterComponent {
   isVisiblePassworde: boolean = false;
-  isVisiblePhoneNumber: boolean = false;
   isVisibleUserName: boolean = false;
 
   isVisibleButton: boolean = true;
@@ -18,7 +17,6 @@ export class RegisterComponent {
   private updateButtonVisibility(): void {
     this.isVisibleButton = !(
       this.isVisiblePassworde &&
-      this.isVisiblePhoneNumber &&
       this.isVisibleUserName
     );
   }
@@ -28,10 +26,6 @@ export class RegisterComponent {
     this.updateButtonVisibility();
   }
 
-  public checkPhoneNumber(phoneNumber: string): void {
-    this.isVisiblePhoneNumber = this.authService.checkPhoneNumber(phoneNumber);
-    this.updateButtonVisibility();
-  }
 
   public checkUserName(UserName: string): void {
     this.isVisibleUserName = this.authService.checkUserName(UserName);
