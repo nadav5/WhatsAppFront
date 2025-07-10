@@ -3,10 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatsListComponent } from './chats-list/components/chats-list.component';
-import { ChatComponent } from './chats-list/chat/chat.component';
-import { MessageComponent } from './chats-list/chat/message/message.component';
-import { MainPageComponent } from './main-page/main-page.component';
+
+import { MainPageComponent } from './main-page/components/main-page.component';
+import { ChatsListComponent } from './main-page/chats-list/components/chats-list.component';
+import { ChatComponent } from './main-page/chats-list/chat/chat.component';
+import { MessageComponent } from './main-page/chats-list/chat/message/message.component';
 
 @NgModule({
   declarations: [

@@ -1,0 +1,16 @@
+<div class="header">
+  <div class="user-info">
+    Hello, {{userName}}
+  </div>
+  <button class="logout-button" routerLink="/">
+    Sign out
+  </button>
+</div>
+
+<div class="navigation">
+  <button class="nav-btn" (click)="setView('contacts')">Contacts</button>
+  <button class="nav-btn" (click)="setView('groups-open-chats')" >Grop and Open chat</button>
+</div>
+
+
+<app-chats-list [currentView]="currentView" ></app-chats-list>
