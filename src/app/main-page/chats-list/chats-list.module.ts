@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MainPageRoutingModule } from '../main-page-routing.module';
 
-
+import { ChatItemComponent } from './chat-item/chat-item.component';
+import { ChatsListComponent } from './components/chats-list.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ChatsListComponent,
+    ChatItemComponent
+  ],
   imports: [
     CommonModule,
-    MainPageRoutingModule,
     RouterModule
+  ],
+  exports: [
+    ChatsListComponent  // לא צריך לייצא את ChatItemComponent, כי משתמשים בו רק בתוך ChatsListComponent
   ]
 })
-export class ChatsListModule  { }
+export class ChatsListModule {}

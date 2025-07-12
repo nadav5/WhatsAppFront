@@ -1,6 +1,3 @@
-<p>chats-list works!</p>
-<button *ngFor="let chat of chats"  [routerLink]="['/chats',chat]">
-  <div >
-    {{ chat }}
-  </div>
-</button>
+<div class="chat-list-container">
+  <app-item-chat *ngFor="let chat of chats" [name]="chat"></app-item-chat>
+</div>

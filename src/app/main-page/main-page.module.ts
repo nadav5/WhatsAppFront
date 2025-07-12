@@ -4,17 +4,17 @@ import { RouterModule } from '@angular/router';
 
 import { MainPageRoutingModule } from './main-page-routing.module';
 import { MainPageComponent } from './components/main-page.component';
-import { ChatsListComponent } from './chats-list/components/chats-list.component';
+import { ChatsListModule } from './chats-list/chats-list.module';
 
 @NgModule({
   declarations: [
-    MainPageComponent,
-    ChatsListComponent
+    MainPageComponent
   ],
   imports: [
     CommonModule,
+    RouterModule,
     MainPageRoutingModule,
-    RouterModule
+    ChatsListModule  // כאן אנחנו מביאים את כל קומפוננטות הרשימה
   ]
 })
-export class MainPageModule { }
+export class MainPageModule {}

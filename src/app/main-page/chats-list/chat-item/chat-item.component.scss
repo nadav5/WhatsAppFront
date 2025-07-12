@@ -1,0 +1,32 @@
+.chat-item {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center; /* name באמצע אופקית */
+  align-items: center;    /* name באמצע אנכית */
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .chat-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .chat-type {
+    position: absolute;
+    right: 16px;
+    font-size: 0.85rem;
+    color: #888;
+  }
+}
