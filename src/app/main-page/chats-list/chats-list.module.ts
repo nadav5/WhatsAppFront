@@ -13,4 +13,4 @@ import { MainPageRoutingModule } from '../main-page-routing.module';
     RouterModule
   ]
 })
-export class MainPageModule { }
+export class ChatsListModule  { }
