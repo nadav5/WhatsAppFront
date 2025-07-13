@@ -25,4 +25,7 @@ export class ChatsListComponent implements OnChanges {
       }
     }
   }
+  public showButtonAdd(): boolean{
+    return this.currentView === 'contacts' ? true : false;
+  }
 }

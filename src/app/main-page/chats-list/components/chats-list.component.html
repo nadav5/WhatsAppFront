@@ -1,3 +1,4 @@
 <div class="chat-list-container">
-  <app-item-chat *ngFor="let chat of chats" [name]="chat"></app-item-chat>
+    <button *ngIf="showButtonAdd()" >Add new Contacts </button>
+  <app-item-chat *ngFor="let chat of chats" [name]="chat" [routerLink]="['/chats',chat]"  ></app-item-chat>
 </div>

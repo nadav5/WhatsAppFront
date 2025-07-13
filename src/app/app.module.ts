@@ -12,7 +12,7 @@ import { MainPageModule } from './main-page/main-page.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MainPageModule  // מכאן הכל נכנס: MainPageModule → ChatsListModule → ChatItemComponent
+    MainPageModule  
   ],
   providers: [],
   bootstrap: [AppComponent]

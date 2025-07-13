@@ -1,1 +1,5 @@
-<p>message works!</p>
+<div [ngClass]="{'message': true, 'own': message.isOwn}">
+  <div class="message-sender">{{ message.sender }}</div>
+  <div class="message-text">{{ message.text }}</div>
+  <div class="message-time">{{ message.time }}</div>
+</div>

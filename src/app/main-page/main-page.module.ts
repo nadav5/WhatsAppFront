@@ -14,7 +14,7 @@ import { ChatsListModule } from './chats-list/chats-list.module';
     CommonModule,
     RouterModule,
     MainPageRoutingModule,
-    ChatsListModule  // כאן אנחנו מביאים את כל קומפוננטות הרשימה
+    ChatsListModule  
   ]
 })
 export class MainPageModule {}

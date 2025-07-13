@@ -4,18 +4,22 @@ import { RouterModule } from '@angular/router';
 
 import { ChatItemComponent } from './chat-item/chat-item.component';
 import { ChatsListComponent } from './components/chats-list.component';
+import { ChatComponent } from './chat/chat.component';
+import { FormsModule } from '@angular/forms';
+import { MessageComponent } from './chat/message/message.component';
 
 @NgModule({
   declarations: [
     ChatsListComponent,
-    ChatItemComponent
+    ChatItemComponent,ChatComponent,MessageComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule 
   ],
   exports: [
-    ChatsListComponent  // לא צריך לייצא את ChatItemComponent, כי משתמשים בו רק בתוך ChatsListComponent
+    ChatsListComponent  
   ]
 })
 export class ChatsListModule {}

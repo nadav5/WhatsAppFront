@@ -1,2 +1,33 @@
-<p>chat works!</p>
-<p> {{id}} </p>
+<div class="chat-container">
+
+  <div class="chat-header">
+    <div class="chat-title">
+      <span class="chat-name">Group / Contact Name</span>
+      <button class="chat-options">⋮</button>
+    </div>
+    <div class="active-users">
+      <div class="active-user" *ngFor="let user of activeUsers.slice(0,5)">
+        {{ user.initials }}
+      </div>
+      <span *ngIf="activeUsers.length > 5">
+        +{{ activeUsers.length - 5 }} active
+      </span>
+    </div>
+  </div>
+
+  <div class="chat-messages">
+    <app-message 
+      *ngFor="let message of messages"
+      [message]="message">
+    </app-message>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      placeholder="Type a message...">
+    <button (click)="sendMessage()">Send</button>
+  </div>
+
+</div>
