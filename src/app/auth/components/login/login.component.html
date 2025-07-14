@@ -18,7 +18,7 @@
     />
     <p class="error" *ngIf="!isVisiblePassworde">Password should be between 6-12</p>
 
-    <button routerLink="/chats" [disabled]="isVisibleButton" (click)="onLogin()">Login</button>
+    <button  [disabled]="isVisibleButton" (click)="onLogin()">Login</button>
     <button class="backHome-btn" routerLink="/">Back to home</button>
   </div>
 </div>

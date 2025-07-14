@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MainPageRoutingModule } from './main-page-routing.module';
 import { MainPageComponent } from './components/main-page.component';
 import { ChatsListModule } from './chats-list/chats-list.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ChatsListModule } from './chats-list/chats-list.module';
     CommonModule,
     RouterModule,
     MainPageRoutingModule,
-    ChatsListModule  
+    ChatsListModule,
+    HttpClientModule
   ]
 })
 export class MainPageModule {}

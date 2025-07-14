@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AuthApiService } from '../../services/auth-api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent {
   
   constructor(
     private authService: AuthService,
-    private authApiService: AuthApiService
+    private authApiService: AuthApiService,
+    private router: Router
   ) {}
 
   private updateButtonVisibility(): void {
@@ -38,20 +40,29 @@ export class LoginComponent {
     const password = this.passwordInput.nativeElement.value;
 
     this.authApiService.login(userName, password).subscribe({
-      next: (res) => {
-        console.log('Login!', res);
-        alert('Login successfully!');
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        const serverMessage: string = err.error?.message || 'Unknown error';
-        const status: number = err.status;
-        const message: String = this.authService.checkTypeError(
-          status,
-          serverMessage
-        );
-        alert(message);
-      },
-    });
+  next: (res) => {
+    if (res.success) {
+      if (res.user === userName) {
+        console.log('Login successful for:', res.user);
+
+        localStorage.setItem('loggedUser', res.user);
+        alert('Welcome ' + res.user);
+        this.router.navigate(['/chats']);
+      } else {
+        console.error('Username mismatch!');
+        alert('Username mismatch');
+      }
+    } else {
+      console.error('Login failed');
+      alert('Invalid username or password');
+    }
+  },
+  error: (err) => {
+    console.error('Server error', err);
+    alert('Server error');
+  }
+});
+
+
   }
 }
