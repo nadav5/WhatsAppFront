@@ -25,4 +25,16 @@ export class AuthService {
   private updateButtonVisibilityLogin(isVisiblePassworde: boolean,isVisiblePhoneNumber: boolean): boolean {
     return  !(isVisiblePassworde && isVisiblePhoneNumber);
   }
+
+  public checkTypeError(status: number,serverMessage: string ):string{
+    if (status === 409) {
+      return('Username already exists!');
+    } else if (status === 404) {
+      return('User not found!');
+    } else if (status === 400) {
+      return('Bad request! Check your input.');
+    } else {
+      return('Registration failed: ' + serverMessage);
+    }
+  }
 }

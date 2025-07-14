@@ -44,7 +44,13 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.error('Error:', err);
-        alert('Registration failed: ' + err.message);
+        const serverMessage: string = err.error?.message || 'Unknown error';
+        const status: number = err.status;
+        const message: String = this.authService.checkTypeError(
+          status,
+          serverMessage
+        );
+        alert(message);
       },
     });
   }
