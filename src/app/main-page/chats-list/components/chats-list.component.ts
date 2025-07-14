@@ -26,17 +26,18 @@ export class ChatsListComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.userName = localStorage.getItem('loggedUser');
 
-    if(this.userName){
+    if (this.userName) {
       this.apiService.getUserByUserName(this.userName).subscribe({
-      next: (res) => {
-        this.user=res;
-        this.contactsArr = this.user.contacts;
-        this.chatsArr = [...this.user.groups, ...this.user.contacts];
-      },
-      error: (err) => {
-        console.error('Error:', err);
-      },
-    });
+        next: (res) => {
+          this.user = res;
+          this.contactsArr = this.user.contacts;
+          this.chatsArr = this.user.chats;
+          //this.chatsArr.map(c =>this.apiService.getChatById(c));
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        },
+      });
     }
   }
 

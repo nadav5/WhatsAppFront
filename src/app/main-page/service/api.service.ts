@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Chat } from '../chats-list/type/chat.type';
 
 @Injectable({
   providedIn: 'root',
@@ -13,4 +14,9 @@ export class ApiService {
   getUserByUserName(userName: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/users/${userName}`);
   }
+
+  getChatById(chatId: string): Observable<Chat> {
+    return this.http.get<Chat>(`${this.baseUrl}/chats/${chatId}`);
+}
+
 }
