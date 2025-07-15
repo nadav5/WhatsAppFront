@@ -1,0 +1,22 @@
+<div class="overlay" (click)="close.emit()"></div>
+<div class="popup">
+  <h2>Create New Group</h2>
+  <div class="inputs">
+    <input type="text" placeholder="Group name" [(ngModel)]="groupName" />
+    <input type="text" placeholder="Description" [(ngModel)]="description" />
+  </div>
+  <div class="contacts-list">
+    <label *ngFor="let contact of contacts">
+      <input
+        type="checkbox"
+        [value]="contact"
+        (change)="toggleMember(contact, $event)"
+      />
+      {{ contact }}
+    </label>
+  </div>
+  <div class="actions">
+    <button class="create" (click)="create()">Create</button>
+    <button class="cancel" (click)="close.emit()">Cancel</button>
+  </div>
+</div>

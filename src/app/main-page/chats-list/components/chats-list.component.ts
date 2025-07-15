@@ -9,6 +9,7 @@ import { ViewType } from '../type/view.type';
 import { ApiService } from '../../service/api.service';
 import { User } from '../type/user.type';
 import { Chat } from '../type/chat.type';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-chats-list',
@@ -23,45 +24,20 @@ export class ChatsListComponent implements OnChanges, OnInit {
   userName: string | null = null;
   user!: User;
   showAvailableUsersPopup = false;
+  showCreateGroupPopup = false;
   availableUsers: User[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('loggedUser');
 
     if (this.userName) {
       this.apiService.getUserByUserName(this.userName).subscribe({
-        next: async (res) => {
+        next: (res) => {
           this.user = res;
           this.contactsArr = this.user.contacts;
-
-          const chatNames: string[] = [];
-
-          for (const chatId of this.user.chats) {
-            try {
-              const chat = await this.apiService
-                .getChatById(chatId)
-                .toPromise();
-
-              if (chat && chat.isGroup && chat.name) {
-                chatNames.push(chat.name);
-              } else if (chat) {
-                const otherUser = chat.members.find(
-                  (m: string) => m !== this.userName
-                );
-                chatNames.push(otherUser || 'Private Chat');
-              } else {
-                chatNames.push('Unknown Chat');
-              }
-            } catch (err) {
-              console.error('Error fetching chat:', chatId, err);
-              chatNames.push('Unknown Chat');
-            }
-          }
-
-          this.chatsArr = chatNames;
-          this.chats = this.chatsArr;
+          this.loadUserChats();
         },
         error: (err) => {
           console.error('Error fetching user:', err);
@@ -84,10 +60,51 @@ export class ChatsListComponent implements OnChanges, OnInit {
     return this.currentView === 'contacts';
   }
 
-  openAvailableUsersPopup() {
+  public openCreateGroupPopup(): void {
+    this.showCreateGroupPopup = true;
+  }
+
+  public openAvailableUsersPopup(): void {
     this.apiService.getAvailableUsers(this.userName!).subscribe((users) => {
       this.availableUsers = users;
       this.showAvailableUsersPopup = true;
+    });
+  }
+
+  handleCreateGroup({
+    name,
+    description,
+    members,
+  }: {
+    name: string;
+    description: string;
+    members: string[];
+  }) {
+    members.push(this.userName!);
+    this.apiService.createGroup(name, description, members).subscribe(() => {
+      this.showCreateGroupPopup = false;
+      this.loadUserChats();
+    });
+  }
+
+  loadUserChats() {
+    this.apiService.getAllChatsForUser(this.userName!).subscribe({
+      next: (chats) => {
+        const chatNames: string[] = [];
+        chats.forEach((chat) => {
+          if (chat.isGroup && chat.name) {
+            chatNames.push(chat.name);
+          } else {
+            const otherUser = chat.members.find((m: string) => m !== this.userName);
+            chatNames.push(otherUser || 'Private Chat');
+          }
+        });
+        this.chatsArr = chatNames;
+        this.chats = this.chatsArr;
+      },
+      error: (err) => {
+        console.error('Error fetching chats for user:', err);
+      },
     });
   }
 
@@ -99,4 +116,15 @@ export class ChatsListComponent implements OnChanges, OnInit {
       );
     });
   }
+
+  openChat(chatNameOrUser: string) {
+  if (this.currentView === 'contacts') {
+
+    this.apiService.getOrCreatePrivateChat(this.userName!, chatNameOrUser).subscribe(chat => {
+      this.router.navigate(['/chats', chat._id]);
+    });
+  } else {
+    this.router.navigate(['/chats', chatNameOrUser]);
+  }
+}
 }

@@ -19,31 +19,44 @@ export class ApiService {
   public getChatById(chatId: string): Observable<Chat> {
     return this.http.get<Chat>(`${this.baseUrl}/chats/${chatId}`);
   }
-public getAvailableUsers(userName: string): Observable<User[]> {
-  return this.http.get<User[]>(`${this.baseUrl}/users/available/${userName}`);
-}
+  public getAvailableUsers(userName: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/users/available/${userName}`);
+  }
 
+  public addContact(
+    userName: string,
+    contactUserName: string
+  ): Observable<any> {
+    return this.http.put(`${this.baseUrl}/users/add-contact`, {
+      userName,
+      contactUserName,
+    });
+  }
 
-  public addContact(userName: string, contactUserName: string): Observable<any> {
-  return this.http.put(`${this.baseUrl}/users/add-contact`, {
-    userName,
-    contactUserName,
-  });
-}
+  public createGroup(
+    name: string,
+    description: string,
+    members: string[]
+  ): Observable<any> {
+    return this.http.post(`${this.baseUrl}/chats`, {
+      name,
+      description,
+      isGroup: true,
+      members,
+    });
+  }
 
-public createGroup(
-  name: string,
-  description: string,
-  members: string[]
-): Observable<any> {
-  return this.http.post(`${this.baseUrl}/chats`, {
-    name,
-    description,
-    isGroup: true,
-    members,
-  });
-}
+  public getAllChatsForUser(userName: string): Observable<Chat[]> {
+    return this.http.get<Chat[]>(`${this.baseUrl}/chats/by-user/${userName}`);
+  }
 
-
-
+  public getOrCreatePrivateChat(
+    user1: string,
+    user2: string
+  ): Observable<Chat> {
+    return this.http.post<Chat>(`${this.baseUrl}/chats/private`, {
+      user1,
+      user2,
+    });
+  }
 }

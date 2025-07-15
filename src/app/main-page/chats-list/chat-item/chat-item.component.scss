@@ -1,32 +1,17 @@
 .chat-item {
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center; /* name באמצע אופקית */
-  align-items: center;    /* name באמצע אנכית */
-  position: relative;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  background: #f9f9f9;
+  transition: background 0.2s;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #ececec;
   }
 
   .chat-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-  }
-
-  .chat-type {
-    position: absolute;
-    right: 16px;
-    font-size: 0.85rem;
-    color: #888;
+    font-weight: 500;
+    font-size: 15px;
   }
 }

@@ -3,17 +3,29 @@
     Add new Contacts
   </button>
 
+  <button *ngIf="!showButtonAdd()" (click)="openCreateGroupPopup()">
+    Create new group
+  </button>
+
   <app-item-chat
     *ngFor="let chat of chats"
     [name]="chat"
-    [routerLink]="['/chats', chat]">
+    (click)="openChat(chat)"
+  >
   </app-item-chat>
 
+  <app-create-group
+    *ngIf="showCreateGroupPopup"
+    [contacts]="contactsArr"
+    (createGroup)="handleCreateGroup($event)"
+    (close)="showCreateGroupPopup = false"
+  ></app-create-group>
 
   <app-available-users
     *ngIf="showAvailableUsersPopup"
     [availableUsers]="availableUsers"
     (close)="showAvailableUsersPopup = false"
-    (addContact)="handleAddContact($event)">
+    (addContact)="handleAddContact($event)"
+  >
   </app-available-users>
 </div>
