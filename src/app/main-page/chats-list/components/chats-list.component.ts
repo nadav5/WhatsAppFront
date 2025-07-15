@@ -10,6 +10,7 @@ import { User } from '../type/user.type';
 import { Chat } from '../type/chat.type';
 import { Router } from '@angular/router';
 import { ChatsListService } from './service/chats-list.service';
+import { CreateChatDto } from '../type/chat.dto';
 
 @Component({
   selector: 'app-chats-list',
@@ -67,23 +68,15 @@ export class ChatsListComponent implements OnChanges, OnInit {
     });
   }
 
-  handleCreateGroup({
-    name,
-    description,
-    members,
-  }: {
-    name: string;
-    description: string;
-    members: string[];
-  }) {
-    members.push(this.userName!);
-    this.chatsListService.createGroup(name, description, members).subscribe(() => {
+  public handleCreateGroup(chatData: CreateChatDto) {
+    chatData.members.push(this.userName!);
+    this.chatsListService.createGroup(chatData.name, chatData.description, chatData.members).subscribe(() => {
       this.showCreateGroupPopup = false;
       this.loadUserChats();
     });
   }
 
-  loadUserChats() {
+  public loadUserChats(): void {
     this.chatsListService.getAllChatsForUser(this.userName!).subscribe({
       next: (chats) => {
         const chatNames = chats.map((chat) =>
@@ -100,7 +93,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
     });
   }
 
-  handleAddContact(userName: string) {
+  public handleAddContact(userName: string): void{
     this.chatsListService.addContact(this.userName!, userName).subscribe(() => {
       this.contactsArr.push(userName);
       this.availableUsers = this.availableUsers.filter(
@@ -109,7 +102,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
     });
   }
 
-  openChat(chatNameOrUser: string) {
+  public openChat(chatNameOrUser: string): void {
     if (this.currentView === 'contacts') {
       this.chatsListService
         .getOrCreatePrivateChat(this.userName!, chatNameOrUser)
