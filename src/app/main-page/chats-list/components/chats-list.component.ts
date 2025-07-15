@@ -8,6 +8,7 @@ import {
 import { ViewType } from '../type/view.type';
 import { ApiService } from '../../service/api.service';
 import { User } from '../type/user.type';
+import { Chat } from '../type/chat.type';
 
 @Component({
   selector: 'app-chats-list',
@@ -16,26 +17,48 @@ import { User } from '../type/user.type';
 })
 export class ChatsListComponent implements OnChanges, OnInit {
   @Input() public currentView?: ViewType;
-  contactsArr: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-  chatsArr: string[] = ['1', '2', '3', '4', '5', '6', '7'];
-  chats = this.contactsArr;
+  contactsArr: string[] = [];
+  chatsArr: string[] = [];
+  chats: string[] = [];
   userName: string | null = null;
   user!: User;
+
   constructor(private apiService: ApiService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('loggedUser');
 
     if (this.userName) {
       this.apiService.getUserByUserName(this.userName).subscribe({
-        next: (res) => {
+        next: async (res) => {
           this.user = res;
           this.contactsArr = this.user.contacts;
-          this.chatsArr = this.user.chats;
-          //this.chatsArr.map(c =>this.apiService.getChatById(c));
+
+          const chatNames: string[] = [];
+
+          for (const chatId of this.user.chats) {
+  try {
+    const chat = await this.apiService.getChatById(chatId).toPromise();
+
+    if (chat && chat.isGroup && chat.name) {
+      chatNames.push(chat.name);
+    } else if (chat) {
+      const otherUser = chat.members.find((m: string) => m !== this.userName);
+      chatNames.push(otherUser || 'Private Chat');
+    } else {
+      chatNames.push('Unknown Chat');
+    }
+  } catch (err) {
+    console.error('Error fetching chat:', chatId, err);
+    chatNames.push('Unknown Chat');
+  }
+}
+
+
+          this.chatsArr = chatNames;
         },
         error: (err) => {
-          console.error('Error:', err);
+          console.error('Error fetching user:', err);
         },
       });
     }
@@ -43,11 +66,6 @@ export class ChatsListComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentView']) {
-      console.log(
-        'currentView changed to:',
-        changes['currentView'].currentValue
-      );
-
       if (this.currentView === 'contacts') {
         this.chats = this.contactsArr;
       } else if (this.currentView === 'groups-open-chats') {
@@ -55,7 +73,8 @@ export class ChatsListComponent implements OnChanges, OnInit {
       }
     }
   }
+
   public showButtonAdd(): boolean {
-    return this.currentView === 'contacts' ? true : false;
+    return this.currentView === 'contacts';
   }
 }
