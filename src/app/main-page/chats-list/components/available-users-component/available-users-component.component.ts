@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '../type/user.type'; // ודא שהנתיב נכון
-
+import { User } from '../../type/user.type';
 @Component({
   selector: 'app-available-users',
   templateUrl: './available-users-component.component.html',

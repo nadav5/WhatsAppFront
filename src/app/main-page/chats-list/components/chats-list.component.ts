@@ -6,10 +6,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ViewType } from '../type/view.type';
-import { ApiService } from '../../service/api.service';
 import { User } from '../type/user.type';
 import { Chat } from '../type/chat.type';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { ChatsListService } from './service/chats-list.service';
 
 @Component({
   selector: 'app-chats-list',
@@ -27,13 +27,13 @@ export class ChatsListComponent implements OnChanges, OnInit {
   showCreateGroupPopup = false;
   availableUsers: User[] = [];
 
-  constructor(private apiService: ApiService,private router: Router) {}
+  constructor(private chatsListService: ChatsListService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem('loggedUser');
 
     if (this.userName) {
-      this.apiService.getUserByUserName(this.userName).subscribe({
+      this.chatsListService.getUserByUserName(this.userName).subscribe({
         next: (res) => {
           this.user = res;
           this.contactsArr = this.user.contacts;
@@ -48,11 +48,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['currentView']) {
-      if (this.currentView === 'contacts') {
-        this.chats = this.contactsArr;
-      } else if (this.currentView === 'groups-open-chats') {
-        this.chats = this.chatsArr;
-      }
+      this.chats = this.currentView === 'contacts' ? this.contactsArr : this.chatsArr;
     }
   }
 
@@ -65,7 +61,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
   }
 
   public openAvailableUsersPopup(): void {
-    this.apiService.getAvailableUsers(this.userName!).subscribe((users) => {
+    this.chatsListService.getAvailableUsers(this.userName!).subscribe((users) => {
       this.availableUsers = users;
       this.showAvailableUsersPopup = true;
     });
@@ -81,24 +77,20 @@ export class ChatsListComponent implements OnChanges, OnInit {
     members: string[];
   }) {
     members.push(this.userName!);
-    this.apiService.createGroup(name, description, members).subscribe(() => {
+    this.chatsListService.createGroup(name, description, members).subscribe(() => {
       this.showCreateGroupPopup = false;
       this.loadUserChats();
     });
   }
 
   loadUserChats() {
-    this.apiService.getAllChatsForUser(this.userName!).subscribe({
+    this.chatsListService.getAllChatsForUser(this.userName!).subscribe({
       next: (chats) => {
-        const chatNames: string[] = [];
-        chats.forEach((chat) => {
-          if (chat.isGroup && chat.name) {
-            chatNames.push(chat.name);
-          } else {
-            const otherUser = chat.members.find((m: string) => m !== this.userName);
-            chatNames.push(otherUser || 'Private Chat');
-          }
-        });
+        const chatNames = chats.map((chat) =>
+          chat.isGroup && chat.name
+            ? chat.name
+            : chat.members.find((m) => m !== this.userName) || 'Private Chat'
+        );
         this.chatsArr = chatNames;
         this.chats = this.chatsArr;
       },
@@ -109,7 +101,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
   }
 
   handleAddContact(userName: string) {
-    this.apiService.addContact(this.userName!, userName).subscribe(() => {
+    this.chatsListService.addContact(this.userName!, userName).subscribe(() => {
       this.contactsArr.push(userName);
       this.availableUsers = this.availableUsers.filter(
         (user) => user.userName !== userName
@@ -118,13 +110,14 @@ export class ChatsListComponent implements OnChanges, OnInit {
   }
 
   openChat(chatNameOrUser: string) {
-  if (this.currentView === 'contacts') {
-
-    this.apiService.getOrCreatePrivateChat(this.userName!, chatNameOrUser).subscribe(chat => {
-      this.router.navigate(['/chats', chat._id]);
-    });
-  } else {
-    this.router.navigate(['/chats', chatNameOrUser]);
+    if (this.currentView === 'contacts') {
+      this.chatsListService
+        .getOrCreatePrivateChat(this.userName!, chatNameOrUser)
+        .subscribe((chat) => {
+          this.router.navigate(['/chats', chat._id]);
+        });
+    } else {
+      this.router.navigate(['/chats', chatNameOrUser]);
+    }
   }
-}
 }
