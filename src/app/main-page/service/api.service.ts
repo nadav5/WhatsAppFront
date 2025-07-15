@@ -31,4 +31,19 @@ public getAvailableUsers(userName: string): Observable<User[]> {
   });
 }
 
+public createGroup(
+  name: string,
+  description: string,
+  members: string[]
+): Observable<any> {
+  return this.http.post(`${this.baseUrl}/chats`, {
+    name,
+    description,
+    isGroup: true,
+    members,
+  });
+}
+
+
+
 }
