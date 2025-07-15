@@ -1,4 +1,19 @@
 <div class="chat-list-container">
-    <button *ngIf="showButtonAdd()" >Add new Contacts </button>
-  <app-item-chat *ngFor="let chat of chats" [name]="chat" [routerLink]="['/chats',chat]"  ></app-item-chat>
+  <button *ngIf="showButtonAdd()" (click)="openAvailableUsersPopup()">
+    Add new Contacts
+  </button>
+
+  <app-item-chat
+    *ngFor="let chat of chats"
+    [name]="chat"
+    [routerLink]="['/chats', chat]">
+  </app-item-chat>
+
+
+  <app-available-users
+    *ngIf="showAvailableUsersPopup"
+    [availableUsers]="availableUsers"
+    (close)="showAvailableUsersPopup = false"
+    (addContact)="handleAddContact($event)">
+  </app-available-users>
 </div>

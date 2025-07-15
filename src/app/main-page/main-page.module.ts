@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule,
     MainPageRoutingModule,
     ChatsListModule,
-    HttpClientModule
+    HttpClientModule,
   ]
 })
 export class MainPageModule {}

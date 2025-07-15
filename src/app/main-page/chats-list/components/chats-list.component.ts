@@ -22,6 +22,8 @@ export class ChatsListComponent implements OnChanges, OnInit {
   chats: string[] = [];
   userName: string | null = null;
   user!: User;
+  showAvailableUsersPopup = false;
+  availableUsers: User[] = [];
 
   constructor(private apiService: ApiService) {}
 
@@ -37,25 +39,29 @@ export class ChatsListComponent implements OnChanges, OnInit {
           const chatNames: string[] = [];
 
           for (const chatId of this.user.chats) {
-  try {
-    const chat = await this.apiService.getChatById(chatId).toPromise();
+            try {
+              const chat = await this.apiService
+                .getChatById(chatId)
+                .toPromise();
 
-    if (chat && chat.isGroup && chat.name) {
-      chatNames.push(chat.name);
-    } else if (chat) {
-      const otherUser = chat.members.find((m: string) => m !== this.userName);
-      chatNames.push(otherUser || 'Private Chat');
-    } else {
-      chatNames.push('Unknown Chat');
-    }
-  } catch (err) {
-    console.error('Error fetching chat:', chatId, err);
-    chatNames.push('Unknown Chat');
-  }
-}
-
+              if (chat && chat.isGroup && chat.name) {
+                chatNames.push(chat.name);
+              } else if (chat) {
+                const otherUser = chat.members.find(
+                  (m: string) => m !== this.userName
+                );
+                chatNames.push(otherUser || 'Private Chat');
+              } else {
+                chatNames.push('Unknown Chat');
+              }
+            } catch (err) {
+              console.error('Error fetching chat:', chatId, err);
+              chatNames.push('Unknown Chat');
+            }
+          }
 
           this.chatsArr = chatNames;
+          this.chats = this.chatsArr;
         },
         error: (err) => {
           console.error('Error fetching user:', err);
@@ -76,5 +82,21 @@ export class ChatsListComponent implements OnChanges, OnInit {
 
   public showButtonAdd(): boolean {
     return this.currentView === 'contacts';
+  }
+
+  openAvailableUsersPopup() {
+    this.apiService.getAvailableUsers(this.userName!).subscribe((users) => {
+      this.availableUsers = users;
+      this.showAvailableUsersPopup = true;
+    });
+  }
+
+  handleAddContact(userName: string) {
+    this.apiService.addContact(this.userName!, userName).subscribe(() => {
+      this.contactsArr.push(userName);
+      this.availableUsers = this.availableUsers.filter(
+        (user) => user.userName !== userName
+      );
+    });
   }
 }

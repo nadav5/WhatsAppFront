@@ -7,11 +7,12 @@ import { ChatsListComponent } from './components/chats-list.component';
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule } from '@angular/forms';
 import { MessageComponent } from './chat/message/message.component';
+import { AvailableUsersComponentComponent } from './available-users-component/available-users-component.component';
 
 @NgModule({
   declarations: [
     ChatsListComponent,
-    ChatItemComponent,ChatComponent,MessageComponent
+    ChatItemComponent,ChatComponent,MessageComponent, AvailableUsersComponentComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +20,8 @@ import { MessageComponent } from './chat/message/message.component';
     FormsModule 
   ],
   exports: [
-    ChatsListComponent  
+    ChatsListComponent,
+    AvailableUsersComponentComponent  
   ]
 })
 export class ChatsListModule {}
