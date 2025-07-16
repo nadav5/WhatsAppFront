@@ -9,6 +9,8 @@ export class AvailableUsersComponentComponent {
   @Input() availableUsers: User[] = [];
   @Output() addContact = new EventEmitter<string>();
   @Output() close = new EventEmitter<void>();
+  public searchText: string = '';
+
 
   public onAdd(userName: string) {
     this.addContact.emit(userName);
@@ -16,5 +18,9 @@ export class AvailableUsersComponentComponent {
 
   public onClose() {
     this.close.emit();
+  }
+
+  get filteredUsers(){
+    return this.availableUsers.filter(u=> u.userName.toLowerCase().includes(this.searchText.toLowerCase()));
   }
 }

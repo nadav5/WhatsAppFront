@@ -6,7 +6,8 @@
     <input type="text" placeholder="Description" [(ngModel)]="description" />
   </div>
   <div class="contacts-list">
-    <label *ngFor="let contact of contacts">
+    <input type="text" [(ngModel)]="searchText" placeholder="Search users...">
+    <label *ngFor="let contact of filteredUsers">
       <input
         type="checkbox"
         [value]="contact"

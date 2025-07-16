@@ -3,7 +3,8 @@
     <h2>Available Users</h2>
 
     <div class="users-list">
-      <div class="user-card" *ngFor="let user of availableUsers">
+      <input type="text" [(ngModel)]="searchText" placeholder="Search users...">
+      <div class="user-card" *ngFor="let user of filteredUsers">
         <span class="user-name">{{ user.userName }}</span>
         <button class="add-button" (click)="onAdd(user.userName)">Add</button>
       </div>

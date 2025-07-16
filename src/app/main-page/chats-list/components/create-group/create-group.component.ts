@@ -13,6 +13,7 @@ export class CreateGroupComponent {
   groupName: string = '';
   description: string = '';
   selectedMembers: string[] = [];
+  public searchText: string = '';
 
   toggleMember(contact: string, event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
@@ -35,4 +36,9 @@ export class CreateGroupComponent {
       members: this.selectedMembers,
     });
   }
+
+  get filteredUsers() {
+  return this.contacts.filter(c => c.toLowerCase().includes(this.searchText.toLowerCase()));
+}
+
 }
