@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { User } from 'src/app/main-page/chats-list/type/user.type';
+import { UserRO } from 'src/app/main-page/chats-list/type/user.ro';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +12,11 @@ export class AuthApiService {
 
   constructor(private http: HttpClient) {}
 
-  register(userName: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}`, { userName, password });
+  public register(userName: string, password: string): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}`, { userName, password });
   }
 
-  login(userName: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { userName, password });
+  public login(userName: string, password: string): Observable<UserRO> {
+    return this.http.post<UserRO>(`${this.baseUrl}/login`, { userName, password });
   }
 }

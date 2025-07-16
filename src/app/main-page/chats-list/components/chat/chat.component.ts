@@ -15,10 +15,12 @@ export class ChatComponent implements OnInit {
   newMessage: string = '';
   userName!: string;
 
-  messages: MessagesDto[] = [
-    { id: '1', sender: 'Nadav', text: 'Hi!', time: '10:00', isOwn: true },
-    { id: '2', sender: 'Alice', text: 'Hello!', time: '10:01', isOwn: false },
-  ];
+
+  messages!: MessagesDto[];
+  // messages: MessagesDto[] = [
+  //   { id: '1', sender: 'Nadav', text: 'Hi!', time: '10:00', isOwn: true },
+  //   { id: '2', sender: 'Alice', text: 'Hello!', time: '10:01', isOwn: false },
+  // ];
 
   activeUsers: ActiveUserDto[] = [
     { initials: 'NA' },

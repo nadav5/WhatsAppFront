@@ -35,9 +35,10 @@ export class LoginComponent {
     this.isVisibleUserName = this.authService.checkUserName(UserName);
     this.updateButtonVisibility();
   }
+
   public onLogin(): void {
-    const userName = this.userNameInput.nativeElement.value;
-    const password = this.passwordInput.nativeElement.value;
+    const userName: string = this.userNameInput.nativeElement.value;
+    const password: string = this.passwordInput.nativeElement.value;
 
     this.authApiService.login(userName, password).subscribe({
   next: (res) => {
