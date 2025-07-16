@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessagesDto } from '../../type/messages.dto';
 import { ActiveUserDto } from '../../type/active-user.dto';
 import { ApiService } from 'src/app/main-page/service/api.service';
 import { Chat } from '../../type/chat.type';
 import { STORAGE_KEYS } from '../../constants';
+import { SocketService } from 'src/app/main-page/service/socket.service';
 
 @Component({
   selector: 'app-chat',
@@ -12,31 +13,26 @@ import { STORAGE_KEYS } from '../../constants';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  id?: string;
   newMessage: string = '';
   userName!: string;
-
-
-  messages!: MessagesDto[];
-  // messages: MessagesDto[] = [
-  //   { id: '1', sender: 'Nadav', text: 'Hi!', time: '10:00', isOwn: true },
-  //   { id: '2', sender: 'Alice', text: 'Hello!', time: '10:01', isOwn: false },
-  // ];
-
-  activeUsers: ActiveUserDto[] = [
-    { initials: 'NA' },
-    { initials: 'AL' },
-    { initials: 'BO' },
-  ];
-
+  messages: MessagesDto[] = [];
   chatName!: string;
   chatId!: string;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  activeUsers: ActiveUserDto[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+    private socketService: SocketService
+  ) {}
 
   ngOnInit(): void {
     this.chatId = this.route.snapshot.paramMap.get('id')!;
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER)!;
+
+    // מצטרף לחדר של הצ׳אט הנוכחי
+    this.socketService.joinChat(this.chatId);
 
     this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
       this.chatName =
@@ -46,41 +42,54 @@ export class ChatComponent implements OnInit {
     });
 
     this.apiService.getMessagesByChatId(this.chatId).subscribe((res: any[]) => {
-      console.log('Messages from API:', res);
       this.messages = res.map((msg) => ({
         id: msg._id,
         sender: msg.sender,
-        text: msg.content,
-        time: new Date(msg.timestamp).toLocaleTimeString([], {
+        content: msg.content,
+        timestamp: new Date(msg.timestamp).toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
         }),
         isOwn: msg.sender === this.userName,
       }));
     });
-  }
 
-  public sendMessage(): void {
-  if (this.newMessage.trim()) {
-    this.apiService.createMessage(this.chatId, this.userName, this.newMessage).subscribe({
-      next: (res) => {
+    // מאזין להודעות חדשות מהשרת
+    this.socketService.onNewMessage((msg) => {
+      if (msg.chatId === this.chatId) {
         this.messages.push({
-          id: res.id,
-          sender: res.sender,
-          text: res.text,
-          time: new Date(res.time).toLocaleTimeString([], {
+          id: msg.id,
+          sender: msg.sender,
+          content: msg.text,
+          timestamp: new Date(msg.time).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
           }),
-          isOwn: res.sender === this.userName,
+          isOwn: msg.sender === this.userName,
         });
-        this.newMessage = '';
-      },
-      error: (err) => {
-        console.error('Error sending message:', err);
       }
     });
   }
-}
 
+  public sendMessage(): void {
+    if (this.newMessage.trim()) {
+      this.apiService
+        .createMessage(this.chatId, this.userName, this.newMessage)
+        .subscribe({
+          next: (res) => {
+            this.socketService.sendMessage({
+              id: res.id,
+              chatId: this.chatId,
+              sender: res.sender,
+              text: res.content,
+              time: res.timestamp,
+            });
+            this.newMessage = '';
+          },
+          error: (err) => {
+            console.error('Error sending message:', err);
+          },
+        });
+    }
+  }
 }

@@ -1,7 +1,7 @@
 export interface MessagesDto {
   id: string;
   sender: string;
-  text: string;
-  time: string;
+  content: string;
+  timestamp: string;
   isOwn: boolean;
 }
