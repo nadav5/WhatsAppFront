@@ -4,6 +4,7 @@ import { MessagesDto } from '../../type/messages.dto';
 import { ActiveUserDto } from '../../type/active-user.dto';
 import { ApiService } from 'src/app/main-page/service/api.service';
 import { Chat } from '../../type/chat.type';
+import { STORAGE_KEYS } from '../../constants';
 
 @Component({
   selector: 'app-chat',
@@ -35,7 +36,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatId = this.route.snapshot.paramMap.get('id')!;
-    this.userName = localStorage.getItem('loggedUser')!;
+    this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER)!;
 
     this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
       this.chatName =

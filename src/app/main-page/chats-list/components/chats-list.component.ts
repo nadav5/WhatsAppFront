@@ -7,21 +7,19 @@ import {
 } from '@angular/core';
 import { ViewType } from '../type/view.type';
 import { User } from '../type/user.type';
-import { Chat } from '../type/chat.type';
 import { Router } from '@angular/router';
 import { ChatsListService } from './service/chats-list.service';
 import { CreateChatDto } from '../type/create-chat.dto';
+import { STORAGE_KEYS } from '../constants';
 
 @Component({
   selector: 'app-chats-list',
   templateUrl: './chats-list.component.html',
   styleUrls: ['./chats-list.component.scss'],
 })
-export class ChatsListComponent implements OnChanges, OnInit {
+export class ChatsListComponent implements  OnInit {
   @Input() public currentView?: ViewType;
-  contactsArr: string[] = [];
   chatsArr: string[] = [];
-  chats: string[] = [];
   userName: string | null = null;
   user!: User;
   showAvailableUsersPopup = false;
@@ -33,25 +31,17 @@ export class ChatsListComponent implements OnChanges, OnInit {
   constructor(private chatsListService: ChatsListService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
-    this.userName = localStorage.getItem('loggedUser');
-
+    this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
     if (this.userName) {
       this.chatsListService.getUserByUserName(this.userName).subscribe({
         next: (res) => {
           this.user = res;
-          this.contactsArr = this.user.contacts;
           this.loadUserChats();
         },
         error: (err) => {
           console.error('Error fetching user:', err);
         },
       });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['currentView']) {
-      this.chats = this.currentView === 'contacts' ? this.contactsArr : this.chatsArr;
     }
   }
 
@@ -93,7 +83,6 @@ export class ChatsListComponent implements OnChanges, OnInit {
         });
 
         this.chatsArr = chatNames;
-        this.chats = this.currentView === 'contacts' ? this.contactsArr : this.chatsArr;
       },
       error: (err) => {
         console.error('Error fetching chats for user:', err);
@@ -103,7 +92,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
 
   public handleAddContact(userName: string): void {
     this.chatsListService.addContact(this.userName!, userName).subscribe(() => {
-      this.contactsArr.push(userName);
+      this.user.contacts.push(userName);
       this.availableUsers = this.availableUsers.filter(
         (user) => user.userName !== userName
       );

@@ -8,7 +8,7 @@
   </button>
 
   <app-item-chat
-    *ngFor="let chat of chats"
+    *ngFor="let chat of currentView === 'contacts' ? user.contacts : chatsArr"
     [name]="chat"
     (click)="openChat(chat)"
   >
@@ -16,10 +16,11 @@
 
   <app-create-group
     *ngIf="showCreateGroupPopup"
-    [contacts]="contactsArr"
+    [contacts]="user.contacts"
     (createGroup)="handleCreateGroup($event)"
     (close)="showCreateGroupPopup = false"
-  ></app-create-group>
+  >
+  </app-create-group>
 
   <app-available-users
     *ngIf="showAvailableUsersPopup"

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewType } from '../chats-list/type/view.type';
+import { STORAGE_KEYS } from '../chats-list/constants';
 
 @Component({
   selector: 'app-main-page',
@@ -12,7 +13,7 @@ export class MainPageComponent implements OnInit{
   currentView?: ViewType;
 
   ngOnInit(): void {
-    this.userName = localStorage.getItem('loggedUser');
+    this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
   }
 
   public setView(view: ViewType): void{
@@ -20,7 +21,7 @@ export class MainPageComponent implements OnInit{
   }
 
   public logout(){
-    localStorage.removeItem('loggedUser');
+    localStorage.removeItem(STORAGE_KEYS.LOGGED_USER);
     console.log('User logged out');
   }
 }

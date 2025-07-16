@@ -2,6 +2,7 @@ import { Component, ElementRef, OnChanges, SimpleChanges, ViewChild } from '@ang
 import { AuthService } from '../../services/auth.service';
 import { AuthApiService } from '../../services/auth-api.service';
 import { Router } from '@angular/router';
+import { STORAGE_KEYS } from 'src/app/main-page/chats-list/constants';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,7 @@ export class LoginComponent {
       if (res.user === userName) {
         console.log('Login successful for:', res.user);
 
-        localStorage.setItem('loggedUser', res.user);
+        localStorage.setItem(STORAGE_KEYS.LOGGED_USER, res.user);
         alert('Welcome ' + res.user);
         this.router.navigate(['/chats']);
       } else {
