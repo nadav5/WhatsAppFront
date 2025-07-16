@@ -1,7 +1,7 @@
 .chat-card {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   padding: 1rem;
   margin-bottom: 1rem;
   display: flex;
@@ -10,24 +10,25 @@
   transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
   }
-}
 
-.chat-info {
-  display: flex;
-  flex-direction: column;
-}
+  .chat-info {
+    display: flex;
+    flex-direction: column;
 
-.chat-name {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #333333;
-}
+    .chat-name {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+    }
 
-.chat-last-message {
-  margin: 0.2rem 0 0;
-  font-size: 0.9rem;
-  color: #666666;
+    .chat-last-message {
+      margin-top: 0.2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
 }
