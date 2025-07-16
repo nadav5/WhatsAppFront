@@ -58,18 +58,26 @@ export class ChatComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    if (this.newMessage.trim()) {
-      this.messages.push({
-        id: (this.messages.length + 1).toString(),
-        sender: 'You',
-        text: this.newMessage,
-        time: new Date().toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-        isOwn: true,
-      });
-      this.newMessage = '';
-    }
+  if (this.newMessage.trim()) {
+    this.apiService.createMessage(this.chatId, this.userName, this.newMessage).subscribe({
+      next: (res) => {
+        this.messages.push({
+          id: res.id,
+          sender: res.sender,
+          text: res.text,
+          time: new Date(res.time).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          isOwn: res.sender === this.userName,
+        });
+        this.newMessage = '';
+      },
+      error: (err) => {
+        console.error('Error sending message:', err);
+      }
+    });
   }
+}
+
 }

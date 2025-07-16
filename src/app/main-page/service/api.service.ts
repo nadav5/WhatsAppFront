@@ -64,4 +64,12 @@ export class ApiService {
   public getMessagesByChatId(chatId: string): Observable<MessagesDto[]>{
     return this.http.get<MessagesDto[]>(`${this.baseUrl}/messages/by-chat/${chatId}`)
   }
+
+  public createMessage(chatId: string,senderUserName: string, content: string): Observable<MessagesDto>{
+    return this.http.post<MessagesDto>(`${this.baseUrl}/messages`,{
+      chatId,
+      senderUserName,
+      content
+    })
+  }
 }
