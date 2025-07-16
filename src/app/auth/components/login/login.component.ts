@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AuthApiService } from '../../services/auth-api.service';
 import { Router } from '@angular/router';
@@ -14,9 +20,12 @@ export class LoginComponent {
   isVisibleUserName: boolean = false;
   isVisibleButton: boolean = true;
 
+  wasUserNameTouched: boolean = false;
+  wasPasswordTouched: boolean = false;
+
   @ViewChild('userName') userNameInput!: ElementRef<HTMLInputElement>;
   @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
-  
+
   constructor(
     private authService: AuthService,
     private authApiService: AuthApiService,
@@ -28,43 +37,44 @@ export class LoginComponent {
   }
 
   public checkPassword(password: string): void {
-    this.isVisiblePassworde = this.authService.checkPassword(password);
-    this.updateButtonVisibility();
-  }
+  this.wasPasswordTouched = true;
+  this.isVisiblePassworde = this.authService.checkPassword(password);
+  this.updateButtonVisibility();
+}
 
-  public checkUserName(UserName: string): void {
-    this.isVisibleUserName = this.authService.checkUserName(UserName);
-    this.updateButtonVisibility();
-  }
+public checkUserName(UserName: string): void {
+  this.wasUserNameTouched = true;
+  this.isVisibleUserName = this.authService.checkUserName(UserName);
+  this.updateButtonVisibility();
+}
+
 
   public onLogin(): void {
     const userName: string = this.userNameInput.nativeElement.value;
     const password: string = this.passwordInput.nativeElement.value;
 
     this.authApiService.login(userName, password).subscribe({
-  next: (res) => {
-    if (res.success) {
-      if (res.user === userName) {
-        console.log('Login successful for:', res.user);
+      next: (res) => {
+        if (res.success) {
+          if (res.user === userName) {
+            console.log('Login successful for:', res.user);
 
-        localStorage.setItem(STORAGE_KEYS.LOGGED_USER, res.user);
-        alert('Welcome ' + res.user);
-        this.router.navigate(['/chats']);
-      } else {
-        console.error('Username mismatch!');
-        alert('Username mismatch');
-      }
-    } else {
-      console.error('Login failed');
-      alert('Invalid username or password');
-    }
-  },
-  error: (err) => {
-    console.error('Server error', err);
-    alert('Server error');
-  }
-});
-
-
+            localStorage.setItem(STORAGE_KEYS.LOGGED_USER, res.user);
+            alert('Welcome ' + res.user);
+            this.router.navigate(['/chats']);
+          } else {
+            console.error('Username mismatch!');
+            alert('Username mismatch');
+          }
+        } else {
+          console.error('Login failed');
+          alert('Invalid username or password');
+        }
+      },
+      error: (err) => {
+        console.error('Server error', err);
+        alert('Server error');
+      },
+    });
   }
 }

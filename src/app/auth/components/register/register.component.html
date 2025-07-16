@@ -7,7 +7,7 @@
     placeholder="Name"
     (input)="checkUserName(userName.value)"
   />
-  <p class="error" [hidden]="isVisibleUserName">
+  <p class="error" *ngIf="wasUserNameTouched && !isVisibleUserName">
     User name must be between 4-10
   </p>
 
@@ -17,7 +17,7 @@
     placeholder="Password"
     (input)="checkPassword(password.value)"
   />
-  <p class="error" [hidden]="isVisiblePassworde">
+  <p class="error" *ngIf="wasPasswordTouched && !isVisiblePassworde">
     password must be between 6-12
   </p>
 
