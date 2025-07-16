@@ -10,7 +10,7 @@ import { User } from '../type/user.type';
 import { Chat } from '../type/chat.type';
 import { Router } from '@angular/router';
 import { ChatsListService } from './service/chats-list.service';
-import { CreateChatDto } from '../type/chat.dto';
+import { CreateChatDto } from '../type/create-chat.dto';
 
 @Component({
   selector: 'app-chats-list',
@@ -27,6 +27,8 @@ export class ChatsListComponent implements OnChanges, OnInit {
   showAvailableUsersPopup = false;
   showCreateGroupPopup = false;
   availableUsers: User[] = [];
+
+  chatNameToIdMap: { [key: string]: string } = {};
 
   constructor(private chatsListService: ChatsListService, private router: Router) {}
 
@@ -79,13 +81,19 @@ export class ChatsListComponent implements OnChanges, OnInit {
   public loadUserChats(): void {
     this.chatsListService.getAllChatsForUser(this.userName!).subscribe({
       next: (chats) => {
-        const chatNames = chats.map((chat) =>
-          chat.isGroup && chat.name
-            ? chat.name
-            : chat.members.find((m) => m !== this.userName) || 'Private Chat'
-        );
+        const chatNames = chats.map((chat) => {
+          const displayName =
+            chat.isGroup && chat.name
+              ? chat.name
+              : chat.members.find((m) => m !== this.userName) || 'Private Chat';
+
+          this.chatNameToIdMap[displayName] = chat._id;
+
+          return displayName;
+        });
+
         this.chatsArr = chatNames;
-        this.chats = this.chatsArr;
+        this.chats = this.currentView === 'contacts' ? this.contactsArr : this.chatsArr;
       },
       error: (err) => {
         console.error('Error fetching chats for user:', err);
@@ -93,7 +101,7 @@ export class ChatsListComponent implements OnChanges, OnInit {
     });
   }
 
-  public handleAddContact(userName: string): void{
+  public handleAddContact(userName: string): void {
     this.chatsListService.addContact(this.userName!, userName).subscribe(() => {
       this.contactsArr.push(userName);
       this.availableUsers = this.availableUsers.filter(
@@ -110,7 +118,12 @@ export class ChatsListComponent implements OnChanges, OnInit {
           this.router.navigate(['/chats', chat._id]);
         });
     } else {
-      this.router.navigate(['/chats', chatNameOrUser]);
+      const chatId = this.chatNameToIdMap[chatNameOrUser];
+      if (chatId) {
+        this.router.navigate(['/chats', chatId]);
+      } else {
+        console.error('Chat ID not found for:', chatNameOrUser);
+      }
     }
   }
 }

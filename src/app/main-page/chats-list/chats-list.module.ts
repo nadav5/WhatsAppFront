@@ -4,11 +4,11 @@ import { RouterModule } from '@angular/router';
 
 import { ChatsListComponent } from './components/chats-list.component';
 import { FormsModule } from '@angular/forms';
-import { AvailableUsersComponentComponent } from './components/available-users-component/available-users-component.component';
 import { ChatItemComponent } from './components/chat-item/chat-item.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { MessageComponent } from './components/chat/message/message.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
+import { AvailableUsersComponentComponent } from './components/available-users-component/available-users-component.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { CreateGroupComponent } from './components/create-group/create-group.com
   exports: [
     ChatsListComponent,
     AvailableUsersComponentComponent,
-    CreateGroupComponent
+    CreateGroupComponent,
+    ChatComponent
   ]
 })
 export class ChatsListModule {}

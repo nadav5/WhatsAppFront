@@ -1,43 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-export type MessagesType = {
-  id: string;
-  sender: string;
-  text: string;
-  time: string;
-  isOwn: boolean;
-};
-
-export type ActiveUser = {
-  initials: string;
-};
+import { MessagesDto } from '../../type/messages.dto';
+import { ActiveUserDto } from '../../type/active-user.dto';
+import { ApiService } from 'src/app/main-page/service/api.service';
+import { Chat } from '../../type/chat.type';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
   id?: string;
   newMessage: string = '';
+  userName!: string;
 
-  messages: MessagesType[] = [
+  messages: MessagesDto[] = [
     { id: '1', sender: 'Nadav', text: 'Hi!', time: '10:00', isOwn: true },
-    { id: '2', sender: 'Alice', text: 'Hello!', time: '10:01', isOwn: false }
+    { id: '2', sender: 'Alice', text: 'Hello!', time: '10:01', isOwn: false },
   ];
 
-  activeUsers: ActiveUser[] = [
+  activeUsers: ActiveUserDto[] = [
     { initials: 'NA' },
     { initials: 'AL' },
-    { initials: 'BO' }
+    { initials: 'BO' },
   ];
 
-  constructor(private route: ActivatedRoute) {}
+  chatName!: string;
+  chatId!: string;
+
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id')!;
-    console.log(this.id);
+    this.chatId = this.route.snapshot.paramMap.get('id')!;
+    this.userName = localStorage.getItem('loggedUser')!;
+
+    this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
+      this.chatName =
+        res.isGroup && res.name
+          ? res.name
+          : res.members.find((m) => m !== this.userName) || 'Private Chat';
+    });
+
+    this.apiService.getMessagesByChatId(this.chatId).subscribe((res: any[]) => {
+      console.log('Messages from API:', res);
+      this.messages = res.map((msg) => ({
+        id: msg._id,
+        sender: msg.sender,
+        text: msg.content,
+        time: new Date(msg.timestamp).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        isOwn: msg.sender === this.userName,
+      }));
+    });
   }
 
   public sendMessage(): void {
@@ -46,8 +63,11 @@ export class ChatComponent implements OnInit {
         id: (this.messages.length + 1).toString(),
         sender: 'You',
         text: this.newMessage,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isOwn: true
+        time: new Date().toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        isOwn: true,
       });
       this.newMessage = '';
     }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Chat } from '../chats-list/type/chat.type';
 import { User } from '../chats-list/type/user.type';
+import { MessagesDto } from '../chats-list/type/messages.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -58,5 +59,9 @@ export class ApiService {
       user1,
       user2,
     });
+  }
+
+  public getMessagesByChatId(chatId: string): Observable<MessagesDto[]>{
+    return this.http.get<MessagesDto[]>(`${this.baseUrl}/messages/by-chat/${chatId}`)
   }
 }

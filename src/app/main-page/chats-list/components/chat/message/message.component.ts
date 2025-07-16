@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MessagesType } from '../../chat/chat.component';
+import { MessagesDto } from '../../../type/messages.dto';
 
 @Component({
   selector: 'app-message',
@@ -7,5 +7,5 @@ import { MessagesType } from '../../chat/chat.component';
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent {
-  @Input() message!: MessagesType;
+  @Input() message!: MessagesDto;
 }
