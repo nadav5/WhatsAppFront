@@ -18,8 +18,9 @@ export class ChatComponent implements OnInit {
   public messages: MessagesDto[] = [];
   public chatName!: string;
   public chatId!: string;
-
+  public isGroup!: boolean;
   public activeUsers: ActiveUserDto[] = [];
+  public showOptionsMenu : boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +34,7 @@ export class ChatComponent implements OnInit {
     this.socketService.joinChat(this.chatId);
 
     this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
+      this.isGroup = res.isGroup;
       if (res.isGroup && res.name) {
         this.chatName = res.name;
       } else {
@@ -91,4 +93,28 @@ export class ChatComponent implements OnInit {
         });
     }
   }
+
+  public toggleOptionsMenu(): void {
+  this.showOptionsMenu = !this.showOptionsMenu;
+}
+
+public leaveGroup(){
+
+}
+
+public showParticipants(){
+
+}
+
+public removeUser(){
+
+}
+
+public addUser(){
+
+}
+
+public showGroupDescription(){
+  
+}
 }

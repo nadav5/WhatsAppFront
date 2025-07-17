@@ -2,9 +2,27 @@
 
   <div class="chat-header">
     <div class="chat-title">
-      <span class="chat-name"> {{chatName}} </span>
-      <button class="chat-options">⋮</button>
+      <div class="chat-info">
+        <span class="chat-name">{{ chatName }}</span>
+        <span class="chat-type" *ngIf="isGroup">Group</span>
+        <span class="chat-type" *ngIf="!isGroup">DM</span>
+      </div>
+
+      <div style="position: relative;">
+        <button class="chat-options" (click)="toggleOptionsMenu()">⋮</button>
+        <div class="chat-options-menu" *ngIf="showOptionsMenu">
+          <ul>
+            <li (click)="showGroupDescription()">Group Description</li>
+            <li (click)="addUser()">Add User</li>
+            <li (click)="removeUser()">Remove User</li>
+            <li (click)="showParticipants()">Participants</li>
+            <li (click)="leaveGroup()">Leave Group</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
+
     <div class="active-users">
       <div class="active-user" *ngFor="let user of activeUsers.slice(0,5)">
         {{ user.initials }}
