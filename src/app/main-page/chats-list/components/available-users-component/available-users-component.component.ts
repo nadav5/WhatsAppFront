@@ -20,7 +20,7 @@ export class AvailableUsersComponentComponent {
     this.close.emit();
   }
 
-  get filteredUsers(){
+  public get filteredUsers(){
     return this.availableUsers.filter(u=> u.userName.toLowerCase().includes(this.searchText.toLowerCase()));
   }
 }

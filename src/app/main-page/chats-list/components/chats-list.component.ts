@@ -19,14 +19,14 @@ import { STORAGE_KEYS } from '../constants';
 })
 export class ChatsListComponent implements  OnInit {
   @Input() public currentView?: ViewType;
-  chatsArr: string[] = [];
-  userName: string | null = null;
-  user!: User;
-  showAvailableUsersPopup = false;
-  showCreateGroupPopup = false;
-  availableUsers: User[] = [];
+  public chatsArr: string[] = [];
+  public userName: string | null = null;
+  public user!: User;
+  public showAvailableUsersPopup = false;
+  public showCreateGroupPopup = false;
+  public availableUsers: User[] = [];
 
-  chatNameToIdMap: { [key: string]: string } = {};
+  public chatNameToIdMap: { [key: string]: string } = {};
 
   constructor(private chatsListService: ChatsListService, private router: Router) {}
 

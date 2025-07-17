@@ -31,7 +31,6 @@ export class ChatComponent implements OnInit {
     this.chatId = this.route.snapshot.paramMap.get('id')!;
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER)!;
 
-    // מצטרף לחדר של הצ׳אט הנוכחי
     this.socketService.joinChat(this.chatId);
 
     this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
@@ -54,7 +53,6 @@ export class ChatComponent implements OnInit {
       }));
     });
 
-    // מאזין להודעות חדשות מהשרת
     this.socketService.onNewMessage((msg) => {
       if (msg.chatId === this.chatId) {
         this.messages.push({

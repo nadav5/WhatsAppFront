@@ -27,8 +27,8 @@ export class ApiService {
   public addContact(
     userName: string,
     contactUserName: string
-  ): Observable<any> {
-    return this.http.put(`${this.baseUrl}/users/add-contact`, {
+  ): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/users/add-contact`, {
       userName,
       contactUserName,
     });
