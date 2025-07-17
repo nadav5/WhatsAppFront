@@ -3,9 +3,9 @@
   <div class="chat-header">
     <div class="chat-title">
       <div class="chat-info">
-        <span class="chat-name">{{ chatName }}</span>
-        <span class="chat-type" *ngIf="isGroup">Group</span>
-        <span class="chat-type" *ngIf="!isGroup">DM</span>
+        <span class="chat-name">{{ chat.name }}</span>
+        <span class="chat-type" *ngIf="chat.isGroup">Group</span>
+        <span class="chat-type" *ngIf="!chat.isGroup">DM</span>
       </div>
 
       <div style="position: relative;">
@@ -52,6 +52,6 @@
 
 <app-description
   *ngIf="showDescriptionPopup"
-  [description]="groupDescription"
+  [description]="chat.description"
   (close)="showDescriptionPopup = false">
 </app-description>
