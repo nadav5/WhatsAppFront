@@ -6,11 +6,10 @@ import { User } from '../../type/user.type';
   styleUrls: ['./available-users-component.component.scss'],
 })
 export class AvailableUsersComponentComponent {
-  @Input() availableUsers: User[] = [];
-  @Output() addContact = new EventEmitter<string>();
-  @Output() close = new EventEmitter<void>();
+  @Input() public  availableUsers: User[] = [];
+  @Output() public  addContact = new EventEmitter<string>();
+  @Output() public  close = new EventEmitter<void>();
   public searchText: string = '';
-
 
   public onAdd(userName: string) {
     this.addContact.emit(userName);
@@ -20,7 +19,12 @@ export class AvailableUsersComponentComponent {
     this.close.emit();
   }
 
-  public get filteredUsers(){
-    return this.availableUsers.filter(u=> u.userName.toLowerCase().includes(this.searchText.toLowerCase()));
+  public get filteredUsers() {
+    if (!this.searchText.trim()) {
+      return [];
+    }
+    return this.availableUsers.filter((u) =>
+      u.userName.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 }

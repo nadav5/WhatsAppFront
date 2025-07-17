@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { Chat } from '../chats-list/type/chat.type';
 import { User } from '../chats-list/type/user.type';
 import { MessagesDto } from '../chats-list/type/messages.dto';
+import { STORAGE_KEYS } from '../chats-list/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = STORAGE_KEYS.ANGULAR_PATH;
 
   constructor(private http: HttpClient) {}
 
@@ -38,8 +39,8 @@ export class ApiService {
     name: string,
     description: string,
     members: string[]
-  ): Observable<any> {
-    return this.http.post(`${this.baseUrl}/chats`, {
+  ): Observable<Chat> {
+    return this.http.post<Chat>(`${this.baseUrl}/chats`, {
       name,
       description,
       isGroup: true,

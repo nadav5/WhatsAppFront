@@ -13,13 +13,13 @@ import { SocketService } from 'src/app/main-page/service/socket.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  newMessage: string = '';
-  userName!: string;
-  messages: MessagesDto[] = [];
-  chatName!: string;
-  chatId!: string;
+  public newMessage: string = '';
+  public userName!: string;
+  public messages: MessagesDto[] = [];
+  public chatName!: string;
+  public chatId!: string;
 
-  activeUsers: ActiveUserDto[] = [];
+  public activeUsers: ActiveUserDto[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -30,19 +30,20 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.chatId = this.route.snapshot.paramMap.get('id')!;
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER)!;
-
     this.socketService.joinChat(this.chatId);
 
     this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
-      this.chatName =
-        res.isGroup && res.name
-          ? res.name
-          : res.members.find((m) => m !== this.userName) || 'Private Chat';
+      if (res.isGroup && res.name) {
+        this.chatName = res.name;
+      } else {
+        const otherMember = res.members.find((m) => m !== this.userName);
+        this.chatName = otherMember ? otherMember : 'Private Chat';
+      }
     });
 
-    this.apiService.getMessagesByChatId(this.chatId).subscribe((res: any[]) => {
+    this.apiService.getMessagesByChatId(this.chatId).subscribe((res: MessagesDto[]) => {
       this.messages = res.map((msg) => ({
-        id: msg._id,
+        _id: msg._id,
         sender: msg.sender,
         content: msg.content,
         timestamp: new Date(msg.timestamp).toLocaleTimeString([], {
@@ -56,7 +57,7 @@ export class ChatComponent implements OnInit {
     this.socketService.onNewMessage((msg) => {
       if (msg.chatId === this.chatId) {
         this.messages.push({
-          id: msg.id,
+          _id: msg.id,
           sender: msg.sender,
           content: msg.text,
           timestamp: new Date(msg.time).toLocaleTimeString([], {
@@ -76,7 +77,7 @@ export class ChatComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.socketService.sendMessage({
-              id: res.id,
+              id: res._id,
               chatId: this.chatId,
               sender: res.sender,
               text: res.content,

@@ -17,7 +17,7 @@ import { STORAGE_KEYS } from '../constants';
   templateUrl: './chats-list.component.html',
   styleUrls: ['./chats-list.component.scss'],
 })
-export class ChatsListComponent implements  OnInit {
+export class ChatsListComponent implements OnInit {
   @Input() public currentView?: ViewType;
   public chatsArr: string[] = [];
   public userName: string | null = null;
@@ -28,7 +28,10 @@ export class ChatsListComponent implements  OnInit {
 
   public chatNameToIdMap: { [key: string]: string } = {};
 
-  constructor(private chatsListService: ChatsListService, private router: Router) {}
+  constructor(
+    private chatsListService: ChatsListService,
+    private router: Router
+  ) {}
 
   async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
@@ -54,18 +57,22 @@ export class ChatsListComponent implements  OnInit {
   }
 
   public openAvailableUsersPopup(): void {
-    this.chatsListService.getAvailableUsers(this.userName!).subscribe((users) => {
-      this.availableUsers = users;
-      this.showAvailableUsersPopup = true;
-    });
+    this.chatsListService
+      .getAvailableUsers(this.userName!)
+      .subscribe((users) => {
+        this.availableUsers = users;
+        this.showAvailableUsersPopup = true;
+      });
   }
 
   public handleCreateGroup(chatData: CreateChatDto) {
     chatData.members.push(this.userName!);
-    this.chatsListService.createGroup(chatData.name, chatData.description, chatData.members).subscribe(() => {
-      this.showCreateGroupPopup = false;
-      this.loadUserChats();
-    });
+    this.chatsListService
+      .createGroup(chatData.name, chatData.description, chatData.members)
+      .subscribe(() => {
+        this.showCreateGroupPopup = false;
+        this.loadUserChats();
+      });
   }
 
   public loadUserChats(): void {

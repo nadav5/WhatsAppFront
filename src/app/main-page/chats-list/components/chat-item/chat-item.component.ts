@@ -5,5 +5,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./chat-item.component.scss']
 })
 export class ChatItemComponent {
-  @Input() name: string = '';
+  @Input() public  name: string = '';
 }

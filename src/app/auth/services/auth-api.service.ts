@@ -3,12 +3,13 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/main-page/chats-list/type/user.type';
 import { UserRO } from 'src/app/main-page/chats-list/type/user.ro';
+import { STORAGE_KEYS } from 'src/app/main-page/chats-list/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthApiService {
-  private baseUrl = 'http://localhost:3000/users';
+  private baseUrl = `${STORAGE_KEYS.ANGULAR_PATH}/users`;
 
   constructor(private http: HttpClient) {}
 

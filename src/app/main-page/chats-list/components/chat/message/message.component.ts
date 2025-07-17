@@ -7,5 +7,5 @@ import { MessagesDto } from '../../../type/messages.dto';
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent {
-  @Input() message!: MessagesDto;
+  @Input() public  message!: MessagesDto;
 }

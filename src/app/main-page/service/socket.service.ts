@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
+import { STORAGE_KEYS } from '../chats-list/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000');
+    this.socket = io(STORAGE_KEYS.ANGULAR_PATH);
   }
 
   public joinChat(chatId: string) {
