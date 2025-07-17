@@ -14,8 +14,8 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getUserByUserName(userName: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/users/${userName}`);
+  public getUserByUserName(userName: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/users/${userName}`);
   }
 
   public getChatById(chatId: string): Observable<Chat> {

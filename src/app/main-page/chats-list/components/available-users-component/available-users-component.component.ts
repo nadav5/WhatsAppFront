@@ -19,7 +19,7 @@ export class AvailableUsersComponentComponent {
     this.close.emit();
   }
 
-  public get filteredUsers() {
+  public get filteredUsers(): User[] {
     if (!this.searchText.trim()) {
       return [];
     }

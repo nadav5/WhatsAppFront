@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { STORAGE_KEYS } from '../chats-list/constants';
+import { SocketMessage } from '../chats-list/type/socket-message';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,11 @@ export class SocketService {
     this.socket.emit('join_chat', chatId);
   }
 
-  public sendMessage(message: any) {
+  public sendMessage(message: SocketMessage ) {
     this.socket.emit('send_message', message);
   }
 
-  public onNewMessage(callback: (message: any) => void) {
+  public onNewMessage(callback: (message: SocketMessage) => void) {
     this.socket.on('new_message', callback);
   }
 }

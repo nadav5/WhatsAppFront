@@ -16,15 +16,15 @@ import { STORAGE_KEYS } from 'src/app/main-page/chats-list/constants';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  isVisiblePassworde: boolean = false;
-  isVisibleUserName: boolean = false;
-  isVisibleButton: boolean = true;
+  public isVisiblePassworde: boolean = false;
+  public isVisibleUserName: boolean = false;
+  public isVisibleButton: boolean = true;
 
-  wasUserNameTouched: boolean = false;
-  wasPasswordTouched: boolean = false;
+  public wasUserNameTouched: boolean = false;
+  public wasPasswordTouched: boolean = false;
 
-  @ViewChild('userName') userNameInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('userName') public userNameInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('password') public passwordInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private authService: AuthService,

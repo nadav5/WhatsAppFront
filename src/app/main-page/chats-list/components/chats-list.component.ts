@@ -65,7 +65,7 @@ export class ChatsListComponent implements OnInit {
       });
   }
 
-  public handleCreateGroup(chatData: CreateChatDto) {
+  public handleCreateGroup(chatData: CreateChatDto): void {
     chatData.members.push(this.userName!);
     this.chatsListService
       .createGroup(chatData.name, chatData.description, chatData.members)
@@ -79,10 +79,18 @@ export class ChatsListComponent implements OnInit {
     this.chatsListService.getAllChatsForUser(this.userName!).subscribe({
       next: (chats) => {
         const chatNames = chats.map((chat) => {
-          const displayName =
-            chat.isGroup && chat.name
-              ? chat.name
-              : chat.members.find((m) => m !== this.userName) || 'Private Chat';
+          let displayName = '';
+
+          if (chat.isGroup && chat.name) {
+            displayName = chat.name;
+          } else {
+            const otherMember = chat.members.find((m) => m !== this.userName);
+            if (otherMember) {
+              displayName = otherMember;
+            } else {
+              displayName = 'Private Chat';
+            }
+          }
 
           this.chatNameToIdMap[displayName] = chat._id;
 

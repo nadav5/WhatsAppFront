@@ -7,6 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class CreateGroupComponent {
   @Input() public contacts: string[] = [];
+
   @Output() public createGroup = new EventEmitter<{
     name: string;
     description: string;
@@ -41,7 +42,7 @@ export class CreateGroupComponent {
     });
   }
 
-  public get filteredUsers() {
+  public get filteredUsers(): string[] {
     return this.contacts.filter((c) =>
       c.toLowerCase().includes(this.searchText.toLowerCase())
     );

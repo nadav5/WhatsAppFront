@@ -27,7 +27,7 @@ export class ChatsListService {
     return this.apiService.getAllChatsForUser(userName);
   }
 
-  public addContact(userName: string, contactUserName: string): Observable<any> {
+  public addContact(userName: string, contactUserName: string): Observable<User> {
     return this.apiService.addContact(userName, contactUserName);
   }
 

@@ -20,7 +20,7 @@ export class MainPageComponent implements OnInit {
     this.currentView = view;
   }
 
-  public logout() {
+  public logout(): void {
     localStorage.removeItem(STORAGE_KEYS.LOGGED_USER);
     console.log('User logged out');
   }

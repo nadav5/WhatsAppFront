@@ -8,15 +8,15 @@ import { AuthApiService } from '../../services/auth-api.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  isVisiblePassworde: boolean = false;
-  isVisibleUserName: boolean = false;
-  isVisibleButton: boolean = true;
+  public isVisiblePassworde: boolean = false;
+  public isVisibleUserName: boolean = false;
+  public isVisibleButton: boolean = true;
 
-  wasUserNameTouched: boolean = false;
-  wasPasswordTouched: boolean = false;
+  public wasUserNameTouched: boolean = false;
+  public wasPasswordTouched: boolean = false;
 
-  @ViewChild('userName') userNameInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('password') passwordInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('userName') public userNameInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('password') public passwordInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private authService: AuthService,
