@@ -79,4 +79,14 @@ export class ApiService {
       userName
     });
   }
+
+  public removeContactFromUser(
+    userName: string,
+    contactUserName: string
+  ): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/users/remove-contact`, {
+      userName,
+      contactUserName,
+    });
+  }
 }

@@ -69,19 +69,20 @@ export class ChatComponent implements OnInit {
       });
 
     this.socketService.onNewMessage((msg) => {
-      if (msg.chat.id === this.chat._id) {
-        this.messages.push({
-          _id: msg.id,
-          sender: msg.sender,
-          content: msg.text,
-          timestamp: new Date(msg.time).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
-          isOwn: msg.sender === this.userName,
-        });
-      }
+  if (msg.chatId === this.chat._id) {
+    this.messages.push({
+      _id: msg.id,
+      sender: msg.sender,
+      content: msg.text,
+      timestamp: new Date(msg.time).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      isOwn: msg.sender === this.userName,
     });
+  }
+});
+
   }
 
   public sendMessage(): void {
