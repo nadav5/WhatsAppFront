@@ -49,3 +49,9 @@
   </div>
 
 </div>
+
+<app-description
+  *ngIf="showDescriptionPopup"
+  [description]="groupDescription"
+  (close)="showDescriptionPopup = false">
+</app-description>

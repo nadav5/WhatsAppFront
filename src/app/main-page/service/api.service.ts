@@ -63,7 +63,7 @@ export class ApiService {
   }
 
   public getMessagesByChatId(chatId: string): Observable<MessagesDto[]>{
-    return this.http.get<MessagesDto[]>(`${this.baseUrl}/messages/by-chat/${chatId}`)
+    return this.http.get<MessagesDto[]>(`${this.baseUrl}/messages/by-chat/${chatId}`);
   }
 
   public createMessage(chatId: string,senderUserName: string, content: string): Observable<MessagesDto>{
@@ -72,5 +72,11 @@ export class ApiService {
       senderUserName,
       content
     })
+  }
+  public addMemberToChat(chatId: string, userName: string): Observable<Chat>{
+    return this.http.put<Chat>(`${this.baseUrl}/add-member`, {
+      chatId,
+      userName
+    });
   }
 }

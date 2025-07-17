@@ -9,11 +9,12 @@ import { ChatComponent } from './components/chat/chat.component';
 import { MessageComponent } from './components/chat/message/message.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { AvailableUsersComponentComponent } from './components/available-users-component/available-users-component.component';
+import { DescriptionComponent } from './components/chat/optione-popup/description/description.component';
 
 @NgModule({
   declarations: [
     ChatsListComponent,
-    ChatItemComponent,ChatComponent,MessageComponent, AvailableUsersComponentComponent, CreateGroupComponent
+    ChatItemComponent,ChatComponent,MessageComponent, AvailableUsersComponentComponent, CreateGroupComponent, DescriptionComponent , DescriptionComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +25,8 @@ import { AvailableUsersComponentComponent } from './components/available-users-c
     ChatsListComponent,
     AvailableUsersComponentComponent,
     CreateGroupComponent,
-    ChatComponent
+    ChatComponent,
+    DescriptionComponent
   ]
 })
 export class ChatsListModule {}

@@ -16,12 +16,20 @@ export class ChatComponent implements OnInit {
   public newMessage: string = '';
   public userName!: string;
   public messages: MessagesDto[] = [];
+
+
   public chatName!: string;
   public chatId!: string;
   public isGroup!: boolean;
   public activeUsers: ActiveUserDto[] = [];
-  public showOptionsMenu : boolean = false;
 
+  
+  public showOptionsMenu: boolean = false;
+
+  public showDescriptionPopup: boolean = false;
+  public groupDescription: string = '';
+
+  public chat!:Chat;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -34,6 +42,7 @@ export class ChatComponent implements OnInit {
     this.socketService.joinChat(this.chatId);
 
     this.apiService.getChatById(this.chatId).subscribe((res: Chat) => {
+      this.chat=res;
       this.isGroup = res.isGroup;
       if (res.isGroup && res.name) {
         this.chatName = res.name;
@@ -43,18 +52,20 @@ export class ChatComponent implements OnInit {
       }
     });
 
-    this.apiService.getMessagesByChatId(this.chatId).subscribe((res: MessagesDto[]) => {
-      this.messages = res.map((msg) => ({
-        _id: msg._id,
-        sender: msg.sender,
-        content: msg.content,
-        timestamp: new Date(msg.timestamp).toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-        isOwn: msg.sender === this.userName,
-      }));
-    });
+    this.apiService
+      .getMessagesByChatId(this.chatId)
+      .subscribe((res: MessagesDto[]) => {
+        this.messages = res.map((msg) => ({
+          _id: msg._id,
+          sender: msg.sender,
+          content: msg.content,
+          timestamp: new Date(msg.timestamp).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          isOwn: msg.sender === this.userName,
+        }));
+      });
 
     this.socketService.onNewMessage((msg) => {
       if (msg.chatId === this.chatId) {
@@ -95,26 +106,21 @@ export class ChatComponent implements OnInit {
   }
 
   public toggleOptionsMenu(): void {
-  this.showOptionsMenu = !this.showOptionsMenu;
-}
+    this.showOptionsMenu = !this.showOptionsMenu;
+  }
 
-public leaveGroup(){
+  public leaveGroup() {}
 
-}
+  public showParticipants() {}
 
-public showParticipants(){
+  public removeUser() {}
 
-}
+  public addUser() {
+   
+  }
 
-public removeUser(){
-
-}
-
-public addUser(){
-
-}
-
-public showGroupDescription(){
-  
-}
+  public showGroupDescription():void {
+    this.groupDescription = this.chat.description;
+    this.showDescriptionPopup = true;
+  }
 }
