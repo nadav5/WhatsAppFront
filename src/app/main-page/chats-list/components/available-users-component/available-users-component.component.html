@@ -2,8 +2,9 @@
   <div class="popup-content">
     <h2>Available Users</h2>
 
+    <input type="text" [(ngModel)]="searchText" placeholder="Search users...">
+
     <div class="users-list">
-      <input type="text" [(ngModel)]="searchText" placeholder="Search users...">
       <div class="user-card" *ngFor="let user of filteredUsers">
         <span class="user-name">{{ user.userName }}</span>
         <button class="add-button" (click)="onAdd(user.userName)">Add</button>
