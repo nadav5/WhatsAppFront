@@ -7,12 +7,23 @@
     Create new group
   </button>
 
-  <app-item-chat
+  <div
+    class="chat-item"
     *ngFor="let chat of currentView === 'contacts' ? user.contacts : chatsArr"
-    [name]="chat"
-    (click)="openChat(chat)"
   >
-  </app-item-chat>
+    <span class="chat-name" (click)="openChat(chat)">{{ chat }}</span>
+    <div>
+      <button
+      *ngIf="showButtonAdd()"
+      class="delete-button"
+      (click)="deleteChat(chat)"
+      title="Delete chat"
+    >
+      ✕
+    </button>
+    </div>
+    
+  </div>
 
   <app-create-group
     *ngIf="showCreateGroupPopup"

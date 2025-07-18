@@ -8,7 +8,7 @@
       </div>
 
       <div style="position: relative">
-        <button class="chat-options" (click)="toggleOptionsMenu()">⋮</button>
+        <button class="chat-options" (click)="toggleOptionsMenu()" *ngIf="this.chat.isGroup">⋮</button>
         <div class="chat-options-menu" *ngIf="showOptionsMenu">
           <ul>
             <li (click)="showGroupDescription()">Group Description</li>

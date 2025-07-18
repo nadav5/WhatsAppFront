@@ -141,32 +141,40 @@ export class ChatComponent implements OnInit {
   }
 
   leaveGroup(): void {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.apiService
-          .removeMemberFromChat(this.chat._id, this.userName)
-          .subscribe({
-            next: (res) => {
-              Swal.fire({
-                title: 'Deleted!',
-                text: 'Your item has been deleted.',
-                icon: 'success',
-              });
-            },
-          });
-        console.log('Item will be deleted');
-        this.router.navigate(['/chats']);
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Are you sure you want to leave the group?',
+    text: "Once you leave, you'll need to be re-added by someone to return.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, leave group!',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.apiService
+        .removeMemberFromChat(this.chat._id, this.userName)
+        .subscribe({
+          next: (res) => {
+            Swal.fire({
+              title: 'Left group',
+              text: 'You have successfully left the group.',
+              icon: 'success',
+            });
+            this.router.navigate(['/chats']);
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'There was a problem leaving the group.',
+              icon: 'error',
+            });
+          }
+        });
+    }
+  });
+}
+
 
   public showParticipants(): void {
     this.refreshUsersLists();

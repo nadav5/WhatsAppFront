@@ -19,8 +19,35 @@
     }
   }
 
-  app-item-chat {
-    display: block;
-    margin-bottom: 12px;
+  .chat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+
+    .chat-name {
+      font-size: 1rem;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .delete-button {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #d32f2f;
+      }
+    }
   }
 }
