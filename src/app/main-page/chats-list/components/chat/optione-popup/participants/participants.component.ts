@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-add-user-chat',
-  templateUrl: './add-user-chat.component.html',
-  styleUrls: ['./add-user-chat.component.scss'],
+  selector: 'app-participants',
+  templateUrl: './participants.component.html',
+  styleUrls: ['./participants.component.scss'],
 })
-export class AddUserChatComponent {
+export class ParticipantsComponent {
   @Input() public filteredUsers: string[] = [];
   @Output() public close = new EventEmitter<void>();
-  @Output() public addContact = new EventEmitter<string>();
+  @Output() removeUser = new EventEmitter<string>();
 
   public searchText: string = '';
 
@@ -21,11 +21,11 @@ export class AddUserChatComponent {
     );
   }
 
-  public closePopup(): void {
-    this.close.emit();
+  public onRemove(userName: string): void {
+    this.removeUser.emit(userName);
   }
 
-  public onAdd(userName: string) {
-    this.addContact.emit(userName);
+  public closePopup(): void {
+    this.close.emit();
   }
 }

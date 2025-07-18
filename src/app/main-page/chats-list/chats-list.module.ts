@@ -11,6 +11,7 @@ import { CreateGroupComponent } from './components/create-group/create-group.com
 import { AvailableUsersComponentComponent } from './components/available-users-component/available-users-component.component';
 import { DescriptionComponent } from './components/chat/optione-popup/description/description.component';
 import { AddUserChatComponent } from './components/chat/optione-popup/add-user-chat/add-user-chat.component';
+import { ParticipantsComponent } from './components/chat/optione-popup/participants/participants.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AddUserChatComponent } from './components/chat/optione-popup/add-user-c
     DescriptionComponent,
     AddUserChatComponent,
     AddUserChatComponent,
+    ParticipantsComponent,
   ],
   imports: [CommonModule, RouterModule, FormsModule],
   exports: [

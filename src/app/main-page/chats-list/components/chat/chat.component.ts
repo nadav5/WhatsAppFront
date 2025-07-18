@@ -20,8 +20,13 @@ export class ChatComponent implements OnInit {
   public activeUsers: ActiveUserDto[] = [];
 
   public showOptionsMenu: boolean = false;
+  public showParticipantsPopup: boolean = false;
+  public showAddUsrPopup: boolean = false;
 
   public showDescriptionPopup: boolean = false;
+
+  public addUsers: string[] = [];
+  public seeUsers: string[] = [];
 
   public chat: Chat = {
     _id: '',
@@ -69,20 +74,19 @@ export class ChatComponent implements OnInit {
       });
 
     this.socketService.onNewMessage((msg) => {
-  if (msg.chatId === this.chat._id) {
-    this.messages.push({
-      _id: msg.id,
-      sender: msg.sender,
-      content: msg.text,
-      timestamp: new Date(msg.time).toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      isOwn: msg.sender === this.userName,
+      if (msg.chatId === this.chat._id) {
+        this.messages.push({
+          _id: msg.id,
+          sender: msg.sender,
+          content: msg.text,
+          timestamp: new Date(msg.time).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          isOwn: msg.sender === this.userName,
+        });
+      }
     });
-  }
-});
-
   }
 
   public sendMessage(): void {
@@ -107,17 +111,71 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  public refreshUsersLists(): void {
+    this.createSeeUsers();
+    this.createAddUsers();
+  }
+
+  public createSeeUsers(): void {
+    this.apiService.getChatById(this.chat._id).subscribe({
+      next: (u) => {
+        this.seeUsers = u.members;
+      },
+    });
+  }
+
+  public createAddUsers(): void {
+    this.apiService.getUserByUserName(this.userName).subscribe({
+      next: (u) => {
+        this.addUsers = u.contacts.filter(
+          (contact) => !this.chat.members.includes(contact)
+        );
+      },
+    });
+  }
+
   public toggleOptionsMenu(): void {
     this.showOptionsMenu = !this.showOptionsMenu;
   }
 
   public leaveGroup() {}
 
-  public showParticipants() {}
+  public showParticipants(): void {
+    this.refreshUsersLists();
+    this.showParticipantsPopup = true;
+  }
 
+  public handleAddContact(userName: string): void {
+    this.apiService.addMemberToChat(this.chat._id, userName).subscribe({
+      next: (res) => {
+        console.log('User added to chat!', res);
+        this.chat = res;
+        this.refreshUsersLists();
+      },
+      error: (err) => {
+        console.error('Error adding user to chat:', err);
+      },
+    });
+  }
+
+  public handleRemoveUser(userName: string): void {
+    this.apiService.removeMemberFromChat(this.chat._id, userName).subscribe({
+      next: (res) => {
+        console.log('removed', res);
+        this.chat = res;
+        this.refreshUsersLists();
+      },
+      error: (err) => {
+        console.error('Error adding user to chat:', err);
+      },
+    });
+  }
   public removeUser() {}
 
-  public addUser() {}
+  public toShowAddUsrPopup() {
+    this.refreshUsersLists();
+    this.showAddUsrPopup = true;
+  }
 
   public showGroupDescription(): void {
     this.showDescriptionPopup = true;

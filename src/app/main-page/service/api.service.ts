@@ -74,7 +74,14 @@ export class ApiService {
     })
   }
   public addMemberToChat(chatId: string, userName: string): Observable<Chat>{
-    return this.http.put<Chat>(`${this.baseUrl}/add-member`, {
+    return this.http.post<Chat>(`${this.baseUrl}/chats/add-member`, {
+      chatId,
+      userName
+    });
+  }
+
+   public removeMemberFromChat(chatId: string, userName: string): Observable<Chat>{
+    return this.http.put<Chat>(`${this.baseUrl}/chats/remove-member`, {
       chatId,
       userName
     });
