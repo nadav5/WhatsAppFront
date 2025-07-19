@@ -7,6 +7,9 @@
     <div class="users-list">
       <div class="user-card" *ngFor="let user of filteredUsersBySearch">
         <span class="user-name">{{ user }}</span>
+        <span class="user-status" [class.online]="activeUsers.includes(user)">
+          {{ activeUsers.includes(user) ? "Online" : "Offline" }}
+        </span>
         <button class="remove-button" (click)="onRemove(user)">Remove</button>
       </div>
     </div>

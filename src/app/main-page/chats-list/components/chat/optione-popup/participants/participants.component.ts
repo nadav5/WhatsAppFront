@@ -9,6 +9,8 @@ export class ParticipantsComponent {
   @Input() public filteredUsers: string[] = [];
   @Output() public close = new EventEmitter<void>();
   @Output() removeUser = new EventEmitter<string>();
+  @Input() public activeUsers: string[] = [];
+
 
   public searchText: string = '';
 

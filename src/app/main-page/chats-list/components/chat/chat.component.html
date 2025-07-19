@@ -8,7 +8,13 @@
       </div>
 
       <div style="position: relative">
-        <button class="chat-options" (click)="toggleOptionsMenu()" *ngIf="this.chat.isGroup">⋮</button>
+        <button
+          class="chat-options"
+          (click)="toggleOptionsMenu()"
+          *ngIf="this.chat.isGroup"
+        >
+          ⋮
+        </button>
         <div class="chat-options-menu" *ngIf="showOptionsMenu">
           <ul>
             <li (click)="showGroupDescription()">Group Description</li>
@@ -20,13 +26,20 @@
       </div>
     </div>
 
-    <div class="active-users">
-      <div class="active-user" *ngFor="let user of activeUsers.slice(0, 5)">
-        {{ user.initials }}
+    <div class="active-users" *ngIf="chat.isGroup">
+      <div
+        class="active-user"
+        *ngFor="let user of activeUsersInChat.slice(0, 5)"
+      >
+        {{ user.charAt(0).toUpperCase() }}
       </div>
-      <span *ngIf="activeUsers.length > 5">
-        +{{ activeUsers.length - 5 }} active
+      <span *ngIf="activeUsersInChat.length > 5">
+        +{{ activeUsersInChat.length - 5 }} active
       </span>
+    </div>
+
+    <div class="dm-status" *ngIf="!chat.isGroup">
+      {{ isOtherOnline ? "Online" : "Offline" }}
     </div>
   </div>
 
@@ -56,14 +69,15 @@
   *ngIf="showAddUsrPopup"
   [filteredUsers]="addUsers"
   (close)="showAddUsrPopup = false"
-  (addContact)="handleAddContact($event)">
+  (addContact)="handleAddContact($event)"
+>
 </app-add-user-chat>
 
 <app-participants
   *ngIf="showParticipantsPopup"
   [filteredUsers]="seeUsers"
+  [activeUsers]="activeUsers"
   (close)="showParticipantsPopup = false"
   (removeUser)="handleRemoveUser($event)"
 >
-  ></app-participants
->
+</app-participants>
