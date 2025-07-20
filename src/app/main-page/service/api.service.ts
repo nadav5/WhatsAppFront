@@ -96,4 +96,8 @@ export class ApiService {
       contactUserName,
     });
   }
+
+  public deleteChat(chatId: string){
+    return this.http.delete(`${this.baseUrl}/chats/${chatId}`);
+  }
 }

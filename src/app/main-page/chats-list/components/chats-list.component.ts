@@ -134,32 +134,52 @@ export class ChatsListComponent implements OnInit {
     }
   }
   public deleteChat(contact: string): void {
-    Swal.fire({
-      title: 'Are you sure you want to remove this contact?',
-      text: 'This contact will be removed from your contacts list.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, remove it!',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.apiService
-          .removeContactFromUser(this.userName!, contact)
-          .subscribe(() => {
-            this.user.contacts = this.user.contacts.filter(
-              (c) => c !== contact
-            );
-            this.chatsArr = this.chatsArr.filter((c) => c !== contact);
+  Swal.fire({
+    title: 'Are you sure you want to remove this contact?',
+    text: 'This contact and private chat will be removed.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.apiService
+        .removeContactFromUser(this.userName!, contact)
+        .subscribe(() => {
+          this.user.contacts = this.user.contacts.filter(
+            (c) => c !== contact
+          );
+          this.chatsArr = this.chatsArr.filter((c) => c !== contact);
 
-            Swal.fire({
-              title: 'Removed!',
-              text: 'The contact has been removed from your list.',
-              icon: 'success',
+          this.chatsListService
+            .getAllChatsForUser(this.userName!)
+            .subscribe((chats) => {
+              const privateChat = chats.find(
+                (chat) =>
+                  !chat.isGroup &&
+                  chat.members.includes(this.userName!) &&
+                  chat.members.includes(contact)
+              );
+              if (privateChat) {
+                this.apiService
+                  .deleteChat(privateChat._id)
+                  .subscribe(() => {
+                    console.log('Private chat and messages deleted');
+                  });
+              }
             });
+
+          Swal.fire({
+            title: 'Removed!',
+            text: 'The contact and related chat were removed.',
+            icon: 'success',
           });
-      }
-    });
-  }
+        });
+    }
+  });
+}
+
+
 }
