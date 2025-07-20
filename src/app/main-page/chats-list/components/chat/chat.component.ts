@@ -16,9 +16,9 @@ export class ChatComponent implements OnInit {
   public newMessage = '';
   public userName!: string;
   public messages: MessagesDto[] = [];
-  public activeUsers: string[] = [];        
-  public activeUsersInChat: string[] = []; 
-  public isOtherOnline = false;    
+  public activeUsers: string[] = [];
+  public activeUsersInChat: string[] = [];
+  public isOtherOnline = false;
   public otherMember = '';
 
   public showOptionsMenu = false;
@@ -101,34 +101,35 @@ export class ChatComponent implements OnInit {
     });
   }
 
- private updateActiveUsersInChat(): void {
-  if (this.chat.members) {
-    this.activeUsersInChat = this.chat.members.filter((m) =>
-      this.activeUsers.includes(m)
-    );
-  }
+  private updateActiveUsersInChat(): void {
+    if (this.chat.members) {
+      this.activeUsersInChat = this.chat.members.filter((m) =>
+        this.activeUsers.includes(m)
+      );
+    }
 
-  if (!this.chat.isGroup && this.otherMember) {
-    this.isOtherOnline = this.activeUsers.includes(this.otherMember);
+    if (!this.chat.isGroup && this.otherMember) {
+      this.isOtherOnline = this.activeUsers.includes(this.otherMember);
+    }
   }
-}
-
 
   public sendMessage(): void {
     if (this.newMessage.trim()) {
-      this.apiService.createMessage(this.chat._id, this.userName, this.newMessage).subscribe({
-        next: (res) => {
-          this.socketService.sendMessage({
-            id: res._id,
-            chatId: this.chat._id,
-            sender: res.sender,
-            text: res.content,
-            time: res.timestamp,
-          });
-          this.newMessage = '';
-        },
-        error: (err) => console.error('Error sending message:', err),
-      });
+      this.apiService
+        .createMessage(this.chat._id, this.userName, this.newMessage)
+        .subscribe({
+          next: (res) => {
+            this.socketService.sendMessage({
+              id: res._id,
+              chatId: this.chat._id,
+              sender: res.sender,
+              text: res.content,
+              time: res.timestamp,
+            });
+            this.newMessage = '';
+          },
+          error: (err) => console.error('Error sending message:', err),
+        });
     }
   }
 
@@ -165,23 +166,25 @@ export class ChatComponent implements OnInit {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.apiService.removeMemberFromChat(this.chat._id, this.userName).subscribe({
-          next: () => {
-            Swal.fire({
-              title: 'Left group',
-              text: 'You have successfully left the group.',
-              icon: 'success',
-            });
-            this.router.navigate(['/chats']);
-          },
-          error: (err) => {
-            Swal.fire({
-              title: 'Error',
-              text: 'There was a problem leaving the group.',
-              icon: 'error',
-            });
-          },
-        });
+        this.apiService
+          .removeMemberFromChat(this.chat._id, this.userName)
+          .subscribe({
+            next: () => {
+              Swal.fire({
+                title: 'Left group',
+                text: 'You have successfully left the group.',
+                icon: 'success',
+              });
+              this.router.navigate(['/chats']);
+            },
+            error: (err) => {
+              Swal.fire({
+                title: 'Error',
+                text: 'There was a problem leaving the group.',
+                icon: 'error',
+              });
+            },
+          });
       }
     });
   }
@@ -219,4 +222,6 @@ export class ChatComponent implements OnInit {
   public showGroupDescription(): void {
     this.showDescriptionPopup = true;
   }
+
+  
 }
