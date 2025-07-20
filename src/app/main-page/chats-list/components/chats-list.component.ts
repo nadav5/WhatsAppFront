@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { ViewType } from '../type/view.type';
@@ -19,7 +21,7 @@ import Swal from 'sweetalert2';
   templateUrl: './chats-list.component.html',
   styleUrls: ['./chats-list.component.scss'],
 })
-export class ChatsListComponent implements OnInit {
+export class ChatsListComponent implements OnInit, OnChanges {
   @Input() public currentView?: ViewType;
   public chatsArr: string[] = [];
   public userName: string | null = null;
@@ -35,8 +37,13 @@ export class ChatsListComponent implements OnInit {
     private router: Router,
     private apiService: ApiService
   ) {}
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes['currentView'] && this.currentView === 'groups-open-chats') {
+      this.loadUserChats();
+    }
+  }
 
-  async ngOnInit(): Promise<void> {
+  public async ngOnInit(): Promise<void> {
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
     if (this.userName) {
       this.chatsListService.getUserByUserName(this.userName).subscribe({
@@ -134,52 +141,48 @@ export class ChatsListComponent implements OnInit {
     }
   }
   public deleteChat(contact: string): void {
-  Swal.fire({
-    title: 'Are you sure you want to remove this contact?',
-    text: 'This contact and private chat will be removed.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, remove it!',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.apiService
-        .removeContactFromUser(this.userName!, contact)
-        .subscribe(() => {
-          this.user.contacts = this.user.contacts.filter(
-            (c) => c !== contact
-          );
-          this.chatsArr = this.chatsArr.filter((c) => c !== contact);
+    Swal.fire({
+      title: 'Are you sure you want to remove this contact?',
+      text: 'This contact and private chat will be removed.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.apiService
+          .removeContactFromUser(this.userName!, contact)
+          .subscribe(() => {
+            this.user.contacts = this.user.contacts.filter(
+              (c) => c !== contact
+            );
+            this.chatsArr = this.chatsArr.filter((c) => c !== contact);
 
-          this.chatsListService
-            .getAllChatsForUser(this.userName!)
-            .subscribe((chats) => {
-              const privateChat = chats.find(
-                (chat) =>
-                  !chat.isGroup &&
-                  chat.members.includes(this.userName!) &&
-                  chat.members.includes(contact)
-              );
-              if (privateChat) {
-                this.apiService
-                  .deleteChat(privateChat._id)
-                  .subscribe(() => {
+            this.chatsListService
+              .getAllChatsForUser(this.userName!)
+              .subscribe((chats) => {
+                const privateChat = chats.find(
+                  (chat) =>
+                    !chat.isGroup &&
+                    chat.members.includes(this.userName!) &&
+                    chat.members.includes(contact)
+                );
+                if (privateChat) {
+                  this.apiService.deleteChat(privateChat._id).subscribe(() => {
                     console.log('Private chat and messages deleted');
                   });
-              }
+                }
+              });
+
+            Swal.fire({
+              title: 'Removed!',
+              text: 'The contact and related chat were removed.',
+              icon: 'success',
             });
-
-          Swal.fire({
-            title: 'Removed!',
-            text: 'The contact and related chat were removed.',
-            icon: 'success',
           });
-        });
-    }
-  });
-}
-
-
+      }
+    });
+  }
 }

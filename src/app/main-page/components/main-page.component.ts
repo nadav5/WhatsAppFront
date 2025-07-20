@@ -12,7 +12,7 @@ export class MainPageComponent implements OnInit {
 
   public currentView?: ViewType;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
   }
 
@@ -24,4 +24,5 @@ export class MainPageComponent implements OnInit {
     localStorage.removeItem(STORAGE_KEYS.LOGGED_USER);
     console.log('User logged out');
   }
+  
 }

@@ -45,7 +45,7 @@ export class ChatComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.chat._id = this.route.snapshot.paramMap.get('id')!;
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER)!;
     this.socketService.connect(this.userName);
