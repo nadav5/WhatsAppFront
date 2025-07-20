@@ -160,39 +160,56 @@ export class ChatComponent implements OnInit {
   }
 
   public leaveGroup(): void {
-    Swal.fire({
-      title: 'Are you sure you want to leave the group?',
-      text: "Once you leave, you'll need to be re-added by someone to return.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, leave group!',
-      cancelButtonText: 'Cancel',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.apiService
-          .removeMemberFromChat(this.chat._id, this.userName)
-          .subscribe({
-            next: () => {
-              Swal.fire({
-                title: 'Left group',
-                text: 'You have successfully left the group.',
-                icon: 'success',
-              });
-              this.router.navigate(['/chats']);
-            },
-            error: (err) => {
-              Swal.fire({
-                title: 'Error',
-                text: 'There was a problem leaving the group.',
-                icon: 'error',
-              });
-            },
-          });
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Are you sure you want to leave the group?',
+    text: "Once you leave, you'll need to be re-added by someone to return.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, leave group!',
+    cancelButtonText: 'Cancel',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.apiService
+        .removeMemberFromChat(this.chat._id, this.userName)
+        .subscribe({
+          next: () => {
+            this.socketService.sendMessage({
+              id: '', 
+              chatId: this.chat._id,
+              sender: 'System', 
+              text: `${this.userName} left the group`,
+              time: new Date().toISOString(),
+            });
+
+          
+
+
+            Swal.fire({
+              title: 'Left group',
+              text: 'You have successfully left the group.',
+              icon: 'success',
+            });
+
+            this.socketService.leaveChat(this.chat._id);
+            this.router.navigate(['/chats']);
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Error',
+              text: 'There was a problem leaving the group.',
+              icon: 'error',
+            });
+          },
+        });
+
+
+        
+    }
+  });
+}
+
 
   public showParticipants(): void {
     this.refreshUsersLists();

@@ -3,7 +3,6 @@ import { CanActivate, Router } from '@angular/router';
 import { STORAGE_KEYS } from '../chats-list/constants';
 import { ApiService } from '../service/api.service';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',

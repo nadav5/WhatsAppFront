@@ -16,10 +16,10 @@ body {
 .home-box,
 .login-container .card,
 .login-container form {
-  background-color: #ffffff;
+  background-color: #fcfcfc;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 400px;
   display: flex;
@@ -27,6 +27,7 @@ body {
   gap: 1rem;
   text-align: center;
 }
+
 
 h1,
 h2 {
