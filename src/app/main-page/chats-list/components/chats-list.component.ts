@@ -133,29 +133,33 @@ export class ChatsListComponent implements OnInit {
       }
     }
   }
- public deleteChat(contact: string): void {
-  Swal.fire({
-    title: 'Are you sure you want to remove this contact?',
-    text: 'This contact will be removed from your contacts list.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, remove it!',
-    cancelButtonText: 'Cancel',
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.apiService.removeContactFromUser(this.userName!, contact).subscribe(() => {
-        this.user.contacts = this.user.contacts.filter(c => c !== contact);
-        this.chatsArr = this.chatsArr.filter(c => c !== contact);
+  public deleteChat(contact: string): void {
+    Swal.fire({
+      title: 'Are you sure you want to remove this contact?',
+      text: 'This contact will be removed from your contacts list.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.apiService
+          .removeContactFromUser(this.userName!, contact)
+          .subscribe(() => {
+            this.user.contacts = this.user.contacts.filter(
+              (c) => c !== contact
+            );
+            this.chatsArr = this.chatsArr.filter((c) => c !== contact);
 
-        Swal.fire({
-          title: 'Removed!',
-          text: 'The contact has been removed from your list.',
-          icon: 'success',
-        });
-      });
-    }
-  });
-}
+            Swal.fire({
+              title: 'Removed!',
+              text: 'The contact has been removed from your list.',
+              icon: 'success',
+            });
+          });
+      }
+    });
+  }
 }
