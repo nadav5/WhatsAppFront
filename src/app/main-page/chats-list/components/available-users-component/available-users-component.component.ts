@@ -7,15 +7,15 @@ import { User } from '../../type/user.type';
 })
 export class AvailableUsersComponentComponent {
   @Input() public  availableUsers: User[] = [];
-  @Output() public  addContact = new EventEmitter<string>();
-  @Output() public  close = new EventEmitter<void>();
+  @Output() public  addContact:EventEmitter<string> = new EventEmitter<string>();
+  @Output() public  close: EventEmitter<void> = new EventEmitter<void>();
   public searchText: string = '';
 
   public onAdd(userName: string) {
     this.addContact.emit(userName);
   }
 
-  public onClose() {
+  public onClose(): void {
     this.close.emit();
   }
 

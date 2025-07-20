@@ -3,153 +3,176 @@
   flex-direction: column;
   height: 100vh;
   background-color: #f7f7f7;
-}
 
-.chat-header {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  .chat-title {
+  .chat-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    .chat-info {
+    .chat-title {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
 
-      .chat-name {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #333;
-      }
+      .chat-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
 
-      .chat-type {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #fff;
-        background-color: #4a90e2;
-        padding: 0.2rem 0.6rem;
-        border-radius: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-    }
-
-    .chat-options {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #888;
-      position: relative;
-
-      &:hover {
-        color: #555;
-      }
-    }
-
-    .chat-options-menu {
-      position: absolute;
-      top: 2rem; // מרחק מהכפתור למטה
-      right: 0;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      border-radius: 8px;
-      width: 200px;
-      z-index: 100;
-
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        li {
-          padding: 0.75rem 1rem;
-          cursor: pointer;
+        .back-button {
+          background-color: transparent;
+          border: 1px solid #4a90e2;
+          color: #4a90e2;
+          padding: 0.3rem 0.8rem;
+          border-radius: 20px;
           font-size: 0.9rem;
-          color: #333;
+          cursor: pointer;
+          transition: background-color 0.2s, color 0.2s;
 
           &:hover {
-            background-color: #f0f0f0;
+            background-color: #4a90e2;
+            color: #fff;
+          }
+        }
+
+        .chat-name {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: #333;
+        }
+
+        .chat-type {
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: #fff;
+          background-color: #4a90e2;
+          padding: 0.2rem 0.6rem;
+          border-radius: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .chat-options {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #888;
+        position: relative;
+
+        &:hover {
+          color: #555;
+        }
+      }
+
+      .chat-options-menu {
+        position: absolute;
+        top: 2rem;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        width: 200px;
+        z-index: 100;
+
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+
+          li {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #333;
+
+            &:hover {
+              background-color: #f0f0f0;
+            }
           }
         }
       }
     }
-  }
 
-  .active-users {
-    display: flex;
-    align-items: center;
-    margin-top: 0.5rem;
-    gap: 0.5rem;
-
-    .active-user {
-      width: 32px;
-      height: 32px;
-      background-color: #4a90e2;
-      color: #fff;
-      font-size: 0.85rem;
-      font-weight: bold;
+    .active-users {
       display: flex;
       align-items: center;
-      justify-content: center;
-      border-radius: 50%;
+      margin-top: 0.5rem;
+      gap: 0.5rem;
+
+      .active-user {
+        width: 32px;
+        height: 32px;
+        background-color: #4a90e2;
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+
+      span {
+        font-size: 0.85rem;
+        color: #555;
+      }
     }
 
-    span {
-      font-size: 0.85rem;
-      color: #555;
+    .dm-status {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #4a90e2;
+      font-weight: 600;
     }
   }
-}
 
-.chat-messages {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.chat-input {
-  display: flex;
-  padding: 0.75rem;
-  background-color: #fff;
-  border-top: 1px solid #ddd;
-
-  input {
+  .chat-messages {
     flex: 1;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 1rem;
-
-    &:focus {
-      outline: none;
-      border-color: #4a90e2;
-    }
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  button {
-    margin-left: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 1rem;
+  .chat-input {
+    display: flex;
+    padding: 0.75rem;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
 
-    &:hover {
-      background-color: #357ab8;
+    input {
+      flex: 1;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: #4a90e2;
+      }
+    }
+
+    button {
+      margin-left: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: #357ab8;
+      }
     }
   }
 }

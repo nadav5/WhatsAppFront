@@ -40,11 +40,11 @@ h2 {
 }
 
 .contacts-list {
-  max-height: 200px;       // << העליתי מ-150 ל-200 לשיקולך
-  overflow-y: auto;        // << גלילה לאורך אם צריך
-  overflow-x: hidden;      // << בלי גלילה לרוחב
+  max-height: 200px;      
+  overflow-y: auto;  
+  overflow-x: hidden;     
   margin-bottom: 15px;
-  padding-right: 5px;      // << מרווח לסקרול כדי שלא יחתוך טקסט
+  padding-right: 5px;
 
   input[type='text'] {
     width: 100%;

@@ -13,18 +13,18 @@ import Swal from 'sweetalert2';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  public newMessage = '';
+  public newMessage: string = '';
   public userName!: string;
   public messages: MessagesDto[] = [];
   public activeUsers: string[] = [];
   public activeUsersInChat: string[] = [];
-  public isOtherOnline = false;
-  public otherMember = '';
+  public isOtherOnline: boolean = false;
+  public otherMember: string = '';
 
-  public showOptionsMenu = false;
-  public showParticipantsPopup = false;
-  public showAddUsrPopup = false;
-  public showDescriptionPopup = false;
+  public showOptionsMenu: boolean = false;
+  public showParticipantsPopup: boolean = false;
+  public showAddUsrPopup: boolean = false;
+  public showDescriptionPopup: boolean = false;
 
   public addUsers: string[] = [];
   public seeUsers: string[] = [];
@@ -132,6 +132,11 @@ export class ChatComponent implements OnInit {
         });
     }
   }
+  public backToChatList(): void {
+  this.socketService.leaveChat(this.chat._id);
+  this.router.navigate(['/chats']);
+}
+
 
   public refreshUsersLists(): void {
     this.createSeeUsers();

@@ -37,17 +37,16 @@ export class LoginComponent {
   }
 
   public checkPassword(password: string): void {
-  this.wasPasswordTouched = true;
-  this.isVisiblePassworde = this.authService.checkPassword(password);
-  this.updateButtonVisibility();
-}
+    this.wasPasswordTouched = true;
+    this.isVisiblePassworde = this.authService.checkPassword(password);
+    this.updateButtonVisibility();
+  }
 
-public checkUserName(UserName: string): void {
-  this.wasUserNameTouched = true;
-  this.isVisibleUserName = this.authService.checkUserName(UserName);
-  this.updateButtonVisibility();
-}
-
+  public checkUserName(UserName: string): void {
+    this.wasUserNameTouched = true;
+    this.isVisibleUserName = this.authService.checkUserName(UserName);
+    this.updateButtonVisibility();
+  }
 
   public onLogin(): void {
     const userName: string = this.userNameInput.nativeElement.value;

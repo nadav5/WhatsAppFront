@@ -19,7 +19,7 @@ export class ChatsListService {
     return this.apiService.getAvailableUsers(userName);
   }
 
-  public createGroup(name: string, description: string, members: string[]): Observable<any> {
+  public createGroup(name: string, description: string, members: string[]): Observable<Chat> {
     return this.apiService.createGroup(name, description, members);
   }
 

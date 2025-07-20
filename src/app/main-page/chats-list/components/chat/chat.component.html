@@ -2,6 +2,10 @@
   <div class="chat-header">
     <div class="chat-title">
       <div class="chat-info">
+        <button class="back-button" (click)="backToChatList()">
+          Back to list
+        </button>
+
         <span class="chat-name">{{ chat.name }}</span>
         <span class="chat-type" *ngIf="chat.isGroup">Group</span>
         <span class="chat-type" *ngIf="!chat.isGroup">DM</span>
@@ -76,7 +80,7 @@
 <app-participants
   *ngIf="showParticipantsPopup"
   [filteredUsers]="seeUsers"
-  [activeUsers]="activeUsers"
+  [activeUsers]="activeUsersInChat"
   (close)="showParticipantsPopup = false"
   (removeUser)="handleRemoveUser($event)"
 >

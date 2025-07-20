@@ -38,9 +38,9 @@
   }
 
   .users-list {
-    max-height: 250px;       // גובה מקסימלי לפני שמופיע סקרול
-    overflow-y: auto;        // סקרול לאורך
-    overflow-x: hidden;      // אין סקרול לרוחב
+    max-height: 250px;       
+    overflow-y: auto;      
+    overflow-x: hidden;      
     border: 1px solid #eee;
     border-radius: 4px;
     margin: 10px 0;

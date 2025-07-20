@@ -24,8 +24,8 @@ export class ChatsListComponent implements OnInit {
   public chatsArr: string[] = [];
   public userName: string | null = null;
   public user!: User;
-  public showAvailableUsersPopup = false;
-  public showCreateGroupPopup = false;
+  public showAvailableUsersPopup: boolean = false;
+  public showCreateGroupPopup: boolean = false;
   public availableUsers: User[] = [];
 
   public chatNameToIdMap: { [key: string]: string } = {};
