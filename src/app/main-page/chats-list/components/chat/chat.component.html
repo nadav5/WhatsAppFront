@@ -57,7 +57,6 @@
         'other-message': !message.isOwn && message.sender !== 'System'
       }"
     >
-      <!-- הודעות רגילות -->
       <ng-container *ngIf="message.sender !== 'System'; else systemMsg">
         <div class="message-header">
           <strong>{{ message.isOwn ? 'Me' : message.sender }}</strong>
@@ -68,7 +67,6 @@
         </div>
       </ng-container>
 
-      <!-- הודעות מערכת -->
       <ng-template #systemMsg>
         <div class="message-content">
           {{ message.content }}
