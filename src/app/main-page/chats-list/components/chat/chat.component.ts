@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/main-page/service/api.service';
 import { SocketService } from 'src/app/main-page/service/socket.service';
@@ -28,6 +28,8 @@ export class ChatComponent implements OnInit {
 
   public addUsers: string[] = [];
   public seeUsers: string[] = [];
+
+  @ViewChild('scrollAnchor') private scrollAnchor!: ElementRef;
 
   public chat: Chat = {
     _id: '',
@@ -101,18 +103,27 @@ export class ChatComponent implements OnInit {
     });
   }
 
- 
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
 
+  private scrollToBottom(): void {
+    try {
+      this.scrollAnchor.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      console.error('Scroll to bottom failed:', err);
+    }
+  }
   private updateActiveUsersInChat(): void {
     if (this.chat.members) {
-      console.log("here", this.chat.members)
+      console.log('here', this.chat.members);
       this.activeUsersInChat = this.chat.members.filter((m) =>
         this.activeUsers.includes(m)
       );
     }
-    console.log(this.activeUsers)
+    console.log(this.activeUsers);
     console.log(this.otherMember);
-    
+
     if (!this.chat.isGroup && this.otherMember) {
       this.isOtherOnline = this.activeUsers.includes(this.otherMember);
     }

@@ -48,34 +48,11 @@
   </div>
 
   <div class="chat-messages">
-    <div
+    <app-message
       *ngFor="let message of messages"
-      [ngClass]="{
-        'message': true,
-        'own-message': message.isOwn,
-        'system-message': message.sender === 'System',
-        'other-message': !message.isOwn && message.sender !== 'System'
-      }"
-    >
-      <ng-container *ngIf="message.sender !== 'System'; else systemMsg">
-        <div class="message-header">
-          <strong>{{ message.isOwn ? '' : message.sender }}</strong>
-          <span class="message-time">{{ message.timestamp }}</span>
-        </div>
-        <div class="message-content">
-          {{ message.content }}
-        </div>
-      </ng-container>
-
-      <ng-template #systemMsg>
-        <div class="message-content">
-          {{ message.content }}
-        </div>
-        <div class="message-time">
-          {{ message.timestamp }}
-        </div>
-      </ng-template>
-    </div>
+      [message]="message"
+    ></app-message>
+     <div #scrollAnchor></div>
   </div>
 
   <div class="chat-input">
