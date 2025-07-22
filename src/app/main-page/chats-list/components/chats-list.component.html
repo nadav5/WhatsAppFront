@@ -7,22 +7,20 @@
     Create new group
   </button>
 
-  <div
-    class="chat-item"
-    *ngFor="let chat of currentView === 'contacts' ? user.contacts : chatsArr"
-  >
+  <input type="text" placeholder="Search..." [(ngModel)]="searchText" />
+
+  <div class="chat-item" *ngFor="let chat of filteredChats">
     <span class="chat-name" (click)="openChat(chat)">{{ chat }}</span>
     <div>
       <button
-      *ngIf="showButtonAdd()"
-      class="delete-button"
-      (click)="deleteChat(chat)"
-      title="Delete chat"
-    >
-      ✕
-    </button>
+        *ngIf="showButtonAdd()"
+        class="delete-button"
+        (click)="deleteChat(chat)"
+        title="Delete Contacts"
+      >
+        ✕
+      </button>
     </div>
-    
   </div>
 
   <app-create-group

@@ -7,8 +7,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class AddUserChatComponent {
   @Input() public filteredUsers: string[] = [];
-  @Output() public close = new EventEmitter<void>();
-  @Output() public addContact = new EventEmitter<string>();
+  @Output() public close: EventEmitter<void> = new EventEmitter<void>();
+  @Output() public addContact: EventEmitter<string> = new EventEmitter<string>();
 
   public searchText: string = '';
 

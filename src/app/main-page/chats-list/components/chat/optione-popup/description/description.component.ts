@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class DescriptionComponent {
   @Input() public description: string = '';
-  @Output() public close = new EventEmitter<void>();
+  @Output() public close: EventEmitter<void> = new EventEmitter<void>();
 
   public closePopup(): void {
     this.close.emit();

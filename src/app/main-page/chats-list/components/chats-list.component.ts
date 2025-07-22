@@ -29,6 +29,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
   public showAvailableUsersPopup: boolean = false;
   public showCreateGroupPopup: boolean = false;
   public availableUsers: User[] = [];
+  public searchText: string = '';
 
   public chatNameToIdMap: { [key: string]: string } = {};
 
@@ -185,4 +186,15 @@ export class ChatsListComponent implements OnInit, OnChanges {
       }
     });
   }
+ public get filteredChats(): string[] {
+  const list :string[]= this.currentView === 'contacts' ? this.user.contacts : this.chatsArr;
+
+  if (!this.searchText.trim()) {
+    return list;
+  }
+
+  return list.filter(chat =>
+    chat.toLowerCase().includes(this.searchText.toLowerCase())
+  );
+}
 }

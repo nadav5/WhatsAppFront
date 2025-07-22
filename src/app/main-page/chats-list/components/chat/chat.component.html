@@ -59,7 +59,7 @@
     >
       <ng-container *ngIf="message.sender !== 'System'; else systemMsg">
         <div class="message-header">
-          <strong>{{ message.isOwn ? 'Me' : message.sender }}</strong>
+          <strong>{{ message.isOwn ? '' : message.sender }}</strong>
           <span class="message-time">{{ message.timestamp }}</span>
         </div>
         <div class="message-content">
@@ -83,6 +83,7 @@
       type="text"
       [(ngModel)]="newMessage"
       placeholder="Type a message..."
+      (keydown.enter)="sendMessage()"
     />
     <button (click)="sendMessage()">Send</button>
   </div>

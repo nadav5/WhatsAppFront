@@ -101,6 +101,8 @@ export class ChatComponent implements OnInit {
     });
   }
 
+ 
+
   private updateActiveUsersInChat(): void {
     if (this.chat.members) {
       this.activeUsersInChat = this.chat.members.filter((m) =>

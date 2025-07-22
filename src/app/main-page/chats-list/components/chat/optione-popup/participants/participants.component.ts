@@ -7,8 +7,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ParticipantsComponent {
   @Input() public filteredUsers: string[] = [];
-  @Output() public close = new EventEmitter<void>();
-  @Output() removeUser = new EventEmitter<string>();
+  @Output() public close: EventEmitter<void> = new EventEmitter<void>();
+  @Output() removeUser:EventEmitter<string> = new EventEmitter<string>();
   @Input() public activeUsers: string[] = [];
 
 

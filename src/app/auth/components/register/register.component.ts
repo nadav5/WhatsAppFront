@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AuthApiService } from '../../services/auth-api.service';
+import { Router } from '@angular/router';
+import { STORAGE_KEYS } from 'src/app/main-page/chats-list/constants';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,8 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private authApiService: AuthApiService
+    private authApiService: AuthApiService,
+    private router: Router
   ) {}
 
   private updateButtonVisibility(): void {
@@ -40,24 +43,29 @@ public checkUserName(userName: string): void {
 }
 
   public onSubmit(): void {
-    const userName = this.userNameInput.nativeElement.value;
-    const password = this.passwordInput.nativeElement.value;
+  const userName = this.userNameInput.nativeElement.value;
+  const password = this.passwordInput.nativeElement.value;
 
-    this.authApiService.register(userName, password).subscribe({
-      next: (res) => {
-        console.log('Registered!', res);
-        alert('Registered successfully!');
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        const serverMessage: string = err.error?.message || 'Unknown error';
-        const status: number = err.status;
-        const message: String = this.authService.checkTypeError(
-          status,
-          serverMessage
-        );
-        alert(message);
-      },
-    });
-  }
+  this.authApiService.register(userName, password).subscribe({
+    next: (res) => {
+      console.log('Registered!', res);
+      alert('Registered successfully!');
+      
+      localStorage.setItem(STORAGE_KEYS.LOGGED_USER, userName);
+      
+      this.router.navigate(['/chats']);
+    },
+    error: (err) => {
+      console.error('Error:', err);
+      const serverMessage: string = err.error?.message || 'Unknown error';
+      const status: number = err.status;
+      const message: String = this.authService.checkTypeError(
+        status,
+        serverMessage
+      );
+      alert(message);
+    },
+  });
+}
+
 }
