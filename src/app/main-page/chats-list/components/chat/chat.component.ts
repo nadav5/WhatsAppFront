@@ -105,11 +105,14 @@ export class ChatComponent implements OnInit {
 
   private updateActiveUsersInChat(): void {
     if (this.chat.members) {
+      console.log("here", this.chat.members)
       this.activeUsersInChat = this.chat.members.filter((m) =>
         this.activeUsers.includes(m)
       );
     }
-
+    console.log(this.activeUsers)
+    console.log(this.otherMember);
+    
     if (!this.chat.isGroup && this.otherMember) {
       this.isOtherOnline = this.activeUsers.includes(this.otherMember);
     }

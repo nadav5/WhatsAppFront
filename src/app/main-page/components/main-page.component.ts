@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewType } from '../chats-list/type/view.type';
 import { STORAGE_KEYS } from '../chats-list/constants';
+import { Socket } from 'socket.io-client';
+import { SocketService } from '../service/socket.service';
 
 @Component({
   selector: 'app-main-page',
@@ -12,6 +14,8 @@ export class MainPageComponent implements OnInit {
 
   public currentView?: ViewType;
 
+  constructor(private socketService:SocketService){}
+
   public ngOnInit(): void {
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
   }
@@ -22,7 +26,7 @@ export class MainPageComponent implements OnInit {
 
   public logout(): void {
     localStorage.removeItem(STORAGE_KEYS.LOGGED_USER);
+    this.socketService.disconnect(); 
     console.log('User logged out');
   }
-  
 }
