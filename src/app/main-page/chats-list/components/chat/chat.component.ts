@@ -172,18 +172,18 @@ export class ChatComponent implements OnInit {
     this.router.navigate(['/chats']);
   }
 
-  public refreshUsersLists(): void {
+  private refreshUsersLists(): void {
     this.createSeeUsers();
     this.createAddUsers();
   }
 
-  public createSeeUsers(): void {
+  private createSeeUsers(): void {
     this.apiService.getChatById(this.chat._id).subscribe((u) => {
       this.seeUsers = u.members;
     });
   }
 
-  public createAddUsers(): void {
+  private createAddUsers(): void {
     this.apiService.getUserByUserName(this.userName).subscribe((u) => {
       this.addUsers = u.contacts.filter((c) => !this.chat.members.includes(c));
     });
@@ -286,4 +286,7 @@ export class ChatComponent implements OnInit {
   public showGroupDescription(): void {
     this.showDescriptionPopup = true;
   }
+
+
+  
 }

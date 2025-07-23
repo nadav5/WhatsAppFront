@@ -86,7 +86,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
       });
   }
 
-  public loadUserChats(): void {
+  private loadUserChats(): void {
     this.chatsListService.getAllChatsForUser(this.userName!).subscribe({
       next: (chats) => {
         const chatNames = chats.map((chat) => {
