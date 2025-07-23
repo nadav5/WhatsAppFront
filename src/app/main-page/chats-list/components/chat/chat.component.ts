@@ -114,7 +114,7 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  ngAfterViewChecked() {
+  public ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
@@ -146,13 +146,7 @@ export class ChatComponent implements OnInit {
         .createMessage(this.chat._id, this.userName, this.newMessage)
         .subscribe({
           next: (res: MessagesDto) => {
-            this.socketService.sendMessage({
-              id: res._id,
-              chatId: this.chat._id,
-              sender: res.sender,
-              text: res.content,
-              time: res.timestamp,
-            });
+           this.emitSocketMessage(res);
             this.newMessage = '';
           },
           error: (err) => {
@@ -226,13 +220,7 @@ export class ChatComponent implements OnInit {
                 )
                 .subscribe({
                   next: (res) => {
-                    this.socketService.sendMessage({
-                      id: res._id,
-                      chatId: this.chat._id,
-                      sender: res.sender,
-                      text: res.content,
-                      time: res.timestamp,
-                    });
+                    this.emitSocketMessage(res);
                     this.newMessage = '';
                   },
                   error: (err) => console.error('Error sending message:', err),
@@ -297,10 +285,11 @@ export class ChatComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   public onDocumentClick(event: MouseEvent): void {
-    const target:HTMLElement  = event.target as HTMLElement;
+    const target: HTMLElement = event.target as HTMLElement;
 
-    const clickedInsideMenu:boolean  = this.optionsMenu?.nativeElement.contains(target);
-    const clickedOnButton:Element  | null = target.closest('.chat-options');
+    const clickedInsideMenu: boolean =
+      this.optionsMenu?.nativeElement.contains(target);
+    const clickedOnButton: Element | null = target.closest('.chat-options');
 
     if (!clickedInsideMenu && !clickedOnButton) {
       this.showOptionsMenu = false;
@@ -310,5 +299,14 @@ export class ChatComponent implements OnInit {
       this.showAddUsrPopup = false;
       this.showDescriptionPopup = false;
     }
+  }
+  private emitSocketMessage(res: MessagesDto): void {
+    this.socketService.sendMessage({
+      id: res._id,
+      chatId: this.chat._id,
+      sender: res.sender,
+      text: res.content,
+      time: res.timestamp,
+    });
   }
 }

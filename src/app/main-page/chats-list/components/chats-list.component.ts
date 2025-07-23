@@ -15,6 +15,7 @@ import { CreateChatDto } from '../type/create-chat.dto';
 import { STORAGE_KEYS } from '../constants';
 import { ApiService } from '../../service/api.service';
 import Swal from 'sweetalert2';
+import { Chat } from '../type/chat.type';
 
 @Component({
   selector: 'app-chats-list',
@@ -48,7 +49,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
     if (this.userName) {
       this.chatsListService.getUserByUserName(this.userName).subscribe({
-        next: (res) => {
+        next: (res: User) => {
           this.user = res;
           this.loadUserChats();
         },
@@ -70,7 +71,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
   public openAvailableUsersPopup(): void {
     this.chatsListService
       .getAvailableUsers(this.userName!)
-      .subscribe((users) => {
+      .subscribe((users: User[]) => {
         this.availableUsers = users;
         this.availableUsers = users.slice(0, 5);
         this.showAvailableUsersPopup = true;
@@ -89,14 +90,16 @@ export class ChatsListComponent implements OnInit, OnChanges {
 
   private loadUserChats(): void {
     this.chatsListService.getAllChatsForUser(this.userName!).subscribe({
-      next: (chats) => {
-        const chatNames = chats.map((chat) => {
+      next: (chats :Chat[]) => {
+        const chatNames = chats.map((chat: Chat) => {
           let displayName = '';
 
           if (chat.isGroup && chat.name) {
             displayName = chat.name;
           } else {
-            const otherMember = chat.members.find((m) => m !== this.userName);
+            const otherMember = chat.members.find(
+              (m: string) => m !== this.userName
+            );
             if (otherMember) {
               displayName = otherMember;
             } else {
@@ -130,7 +133,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
     if (this.currentView === 'contacts') {
       this.chatsListService
         .getOrCreatePrivateChat(this.userName!, chatNameOrUser)
-        .subscribe((chat) => {
+        .subscribe((chat :Chat) => {
           this.router.navigate(['/chats', chat._id]);
         });
     } else {
@@ -160,7 +163,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
             this.user.contacts = this.user.contacts.filter(
               (c) => c !== contact
             );
-            this.chatsArr = this.chatsArr.filter((c) => c !== contact);
+            this.chatsArr = this.chatsArr.filter((c: string) => c !== contact);
 
             this.chatsListService
               .getAllChatsForUser(this.userName!)
@@ -187,15 +190,16 @@ export class ChatsListComponent implements OnInit, OnChanges {
       }
     });
   }
- public get filteredChats(): string[] {
-  const list :string[]= this.currentView === 'contacts' ? this.user.contacts : this.chatsArr;
+  public get filteredChats(): string[] {
+    const list: string[] =
+      this.currentView === 'contacts' ? this.user.contacts : this.chatsArr;
 
-  if (!this.searchText.trim()) {
-    return list;
+    if (!this.searchText.trim()) {
+      return list;
+    }
+
+    return list.filter((chat: string) =>
+      chat.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
-
-  return list.filter(chat =>
-    chat.toLowerCase().includes(this.searchText.toLowerCase())
-  );
-}
 }
