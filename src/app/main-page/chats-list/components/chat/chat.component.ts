@@ -6,6 +6,7 @@ import { Chat } from '../../type/chat.type';
 import { MessagesDto } from '../../type/messages.dto';
 import { STORAGE_KEYS } from '../../constants';
 import Swal from 'sweetalert2';
+import { SocketMessage } from '../../type/socket-message';
 
 @Component({
   selector: 'app-chat',
@@ -76,7 +77,7 @@ export class ChatComponent implements OnInit {
     });
 
     this.apiService.getMessagesByChatId(this.chat._id).subscribe((res ) => {
-      this.messages = res.map((msg) => ({
+      this.messages = res.map((msg: MessagesDto) => ({
         _id: msg._id,
         sender: msg.sender,
         content: msg.content,
@@ -88,7 +89,7 @@ export class ChatComponent implements OnInit {
       }));
     });
 
-    this.socketService.onNewMessage((msg) => {
+    this.socketService.onNewMessage((msg: SocketMessage) => {
       if (msg.chatId === this.chat._id) {
         this.messages.push({
           _id: msg.id,
@@ -118,7 +119,7 @@ export class ChatComponent implements OnInit {
   private updateActiveUsersInChat(): void {
     if (this.chat.members) {
       console.log('here', this.chat.members);
-      this.activeUsersInChat = this.chat.members.filter((m) =>
+      this.activeUsersInChat = this.chat.members.filter((m:string) =>
         this.activeUsers.includes(m)
       );
     }
@@ -135,7 +136,7 @@ export class ChatComponent implements OnInit {
     this.apiService
       .createMessage(this.chat._id, this.userName, this.newMessage)
       .subscribe({
-        next: (res) => {
+        next: (res: MessagesDto) => {
           this.socketService.sendMessage({
             id: res._id,
             chatId: this.chat._id,

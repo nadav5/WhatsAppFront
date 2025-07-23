@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-group',
@@ -31,7 +32,7 @@ export class CreateGroupComponent {
 
   public create(): void {
     if (!this.groupName.trim()) {
-      alert('Group name is required!');
+      Swal.fire('Group name is required!');
       return;
     }
 

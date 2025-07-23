@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { AuthApiService } from '../../services/auth-api.service';
 import { Router } from '@angular/router';
 import { STORAGE_KEYS } from 'src/app/main-page/chats-list/constants';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -59,20 +60,22 @@ export class LoginComponent {
             console.log('Login successful for:', res.user);
 
             localStorage.setItem(STORAGE_KEYS.LOGGED_USER, res.user);
-            alert('Welcome ' + res.user);
+            Swal.fire('Welcome ' + res.user);
             this.router.navigate(['/chats']);
           } else {
             console.error('Username mismatch!');
-            alert('Username mismatch');
+            Swal.fire('Username mismatch');
+
           }
         } else {
           console.error('Login failed');
-          alert('Invalid username or password');
+          Swal.fire('Invalid username or password');
+
         }
       },
       error: (err) => {
         console.error('Server error', err);
-        alert('Server error');
+        Swal.fire('Server error');
       },
     });
   }

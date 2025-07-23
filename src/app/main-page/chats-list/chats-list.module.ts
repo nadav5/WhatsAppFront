@@ -26,6 +26,7 @@ import { ParticipantsComponent } from './components/chat/optione-popup/participa
     AddUserChatComponent,
     AddUserChatComponent,
     ParticipantsComponent,
+    
   ],
   imports: [CommonModule, RouterModule, FormsModule],
   exports: [
