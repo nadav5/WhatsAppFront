@@ -75,7 +75,7 @@ export class ChatComponent implements OnInit {
       this.updateActiveUsersInChat();
     });
 
-    this.apiService.getMessagesByChatId(this.chat._id).subscribe((res) => {
+    this.apiService.getMessagesByChatId(this.chat._id).subscribe((res ) => {
       this.messages = res.map((msg) => ({
         _id: msg._id,
         sender: msg.sender,

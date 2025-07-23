@@ -18,6 +18,7 @@ export class MainPageComponent implements OnInit {
 
   public ngOnInit(): void {
     this.userName = localStorage.getItem(STORAGE_KEYS.LOGGED_USER);
+    this.currentView = 'groups-open-chats';
   }
 
   public setView(view: ViewType): void {

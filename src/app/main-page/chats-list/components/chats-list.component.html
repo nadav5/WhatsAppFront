@@ -9,8 +9,8 @@
 
   <input type="text" placeholder="Search..." [(ngModel)]="searchText" />
 
-  <div class="chat-item" *ngFor="let chat of filteredChats">
-    <span class="chat-name" (click)="openChat(chat)">{{ chat }}</span>
+  <div class="chat-item" *ngFor="let chat of filteredChats" (click)="openChat(chat)">
+    <span class="chat-name" >{{ chat }}</span>
     <div>
       <button
         *ngIf="showButtonAdd()"
