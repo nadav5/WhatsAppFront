@@ -131,24 +131,41 @@ export class ChatComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    if (this.newMessage.trim()) {
-      this.apiService
-        .createMessage(this.chat._id, this.userName, this.newMessage)
-        .subscribe({
-          next: (res) => {
-            this.socketService.sendMessage({
-              id: res._id,
-              chatId: this.chat._id,
-              sender: res.sender,
-              text: res.content,
-              time: res.timestamp,
+  if (this.newMessage.trim()) {
+    this.apiService
+      .createMessage(this.chat._id, this.userName, this.newMessage)
+      .subscribe({
+        next: (res) => {
+          this.socketService.sendMessage({
+            id: res._id,
+            chatId: this.chat._id,
+            sender: res.sender,
+            text: res.content,
+            time: res.timestamp,
+          });
+          this.newMessage = '';
+        },
+        error: (err) => {
+          console.error('Error sending message:', err);
+
+          if (err.status === 403) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Access Denied',
+              text: 'You are not a member of this chat.',
             });
-            this.newMessage = '';
-          },
-          error: (err) => console.error('Error sending message:', err),
-        });
-    }
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'There was a problem sending the message.',
+            });
+          }
+        },
+      });
   }
+}
+
   public backToChatList(): void {
     this.socketService.leaveChat(this.chat._id);
     this.router.navigate(['/chats']);
@@ -248,14 +265,17 @@ export class ChatComponent implements OnInit {
   }
 
   public handleRemoveUser(userName: string): void {
-    this.apiService.removeMemberFromChat(this.chat._id, userName).subscribe({
-      next: (res) => {
-        this.chat = res;
-        this.refreshUsersLists();
-      },
-      error: (err) => console.error('Error removing user from chat:', err),
-    });
-  }
+  this.apiService.removeMemberFromChat(this.chat._id, userName).subscribe({
+    next: (res) => {
+      this.chat = res;
+      this.refreshUsersLists();
+
+      this.socketService.leaveChatAsUser(this.chat._id, userName);
+    },
+    error: (err) => console.error('Error removing user from chat:', err),
+  });
+}
+
 
   public toShowAddUsrPopup(): void {
     this.refreshUsersLists();

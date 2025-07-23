@@ -47,4 +47,10 @@ export class SocketService {
   }
 }
 
+public leaveChatAsUser(chatId: string, userName: string): void {
+  this.socket.emit('leave_chat_user', { chatId, userName });
+  console.log(`leaveChatUser emitted for ${userName} in chat ${chatId}`);
+}
+
+
 }
