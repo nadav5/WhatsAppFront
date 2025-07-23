@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit {
 
   @ViewChild('scrollAnchor') private scrollAnchor!: ElementRef;
 
+  
   public chat: Chat = {
     _id: '',
     name: '',
@@ -65,7 +66,7 @@ export class ChatComponent implements OnInit {
       if (res.isGroup && res.name) {
         this.chat.name = res.name;
       } else {
-        const other = res.members.find((m) => m !== this.userName);
+        const other:string | undefined = res.members.find((m) => m !== this.userName);
         this.otherMember = other || '';
         this.chat.name = other || 'Private Chat';
         this.isOtherOnline = this.activeUsers.includes(this.otherMember);

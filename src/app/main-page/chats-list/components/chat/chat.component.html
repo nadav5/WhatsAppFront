@@ -19,7 +19,7 @@
         >
           ⋮
         </button>
-        <div class="chat-options-menu" *ngIf="showOptionsMenu">
+        <div class="chat-options-menu" #optionsMenu *ngIf="showOptionsMenu">
           <ul>
             <li (click)="showGroupDescription()">Group Description</li>
             <li (click)="toShowAddUsrPopup()">Add User</li>
@@ -34,6 +34,7 @@
       <div
         class="active-user"
         *ngFor="let user of activeUsersInChat.slice(0, 5)"
+        [title]="user"
       >
         {{ user.charAt(0).toUpperCase() }}
       </div>
@@ -52,7 +53,7 @@
       *ngFor="let message of messages"
       [message]="message"
     ></app-message>
-     <div #scrollAnchor></div>
+    <div #scrollAnchor></div>
   </div>
 
   <div class="chat-input">
@@ -68,6 +69,7 @@
 
 <app-description
   *ngIf="showDescriptionPopup"
+  #descriptionPopup
   [description]="chat.description"
   (close)="showDescriptionPopup = false"
 >
@@ -75,6 +77,7 @@
 
 <app-add-user-chat
   *ngIf="showAddUsrPopup"
+  #addUserPopup
   [filteredUsers]="addUsers"
   (close)="showAddUsrPopup = false"
   (addContact)="handleAddContact($event)"
@@ -83,6 +86,7 @@
 
 <app-participants
   *ngIf="showParticipantsPopup"
+  #participantsPopup
   [filteredUsers]="seeUsers"
   [activeUsers]="activeUsersInChat"
   (close)="showParticipantsPopup = false"
