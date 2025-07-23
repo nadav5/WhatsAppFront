@@ -20,11 +20,15 @@ export class AvailableUsersComponentComponent {
   }
 
   public get filteredUsers(): User[] {
-    if (!this.searchText.trim()) {
-      return [];
-    }
-    return this.availableUsers.filter((u) =>
-      u.userName.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+  if (!this.searchText.trim()) {
+    return this.availableUsers.slice(0, 5);
   }
+
+  return this.availableUsers
+    .filter((u) =>
+      u.userName.toLowerCase().includes(this.searchText.toLowerCase())
+    )
+    .slice(0, 5); 
+}
+
 }

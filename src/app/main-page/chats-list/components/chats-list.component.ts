@@ -72,6 +72,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
       .getAvailableUsers(this.userName!)
       .subscribe((users) => {
         this.availableUsers = users;
+        this.availableUsers = users.slice(0, 5);
         this.showAvailableUsersPopup = true;
       });
   }

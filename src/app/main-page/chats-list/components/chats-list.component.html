@@ -15,7 +15,7 @@
       <button
         *ngIf="showButtonAdd()"
         class="delete-button"
-        (click)="deleteChat(chat)"
+        (click)="deleteChat(chat); $event.stopPropagation()"
         title="Delete Contacts"
       >
         ✕
