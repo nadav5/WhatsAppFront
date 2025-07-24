@@ -14,7 +14,7 @@ import { ChatsListService } from './service/chats-list.service';
 import { CreateChatDto } from '../type/create-chat.dto';
 import { STORAGE_KEYS } from '../constants';
 import { ApiService } from '../../service/api.service';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 import { Chat } from '../type/chat.type';
 
 @Component({
@@ -124,7 +124,7 @@ export class ChatsListComponent implements OnInit, OnChanges {
     this.chatsListService.addContact(this.userName!, userName).subscribe(() => {
       this.user.contacts.push(userName);
       this.availableUsers = this.availableUsers.filter(
-        (user) => user.userName !== userName
+        (user: User) => user.userName !== userName
       );
     });
   }
@@ -155,21 +155,21 @@ export class ChatsListComponent implements OnInit, OnChanges {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, remove it!',
       cancelButtonText: 'Cancel',
-    }).then((result) => {
+    }).then((result: SweetAlertResult) => {
       if (result.isConfirmed) {
         this.apiService
           .removeContactFromUser(this.userName!, contact)
           .subscribe(() => {
             this.user.contacts = this.user.contacts.filter(
-              (c) => c !== contact
+              (c: string) => c !== contact
             );
             this.chatsArr = this.chatsArr.filter((c: string) => c !== contact);
 
             this.chatsListService
               .getAllChatsForUser(this.userName!)
-              .subscribe((chats) => {
+              .subscribe((chats: Chat[]) => {
                 const privateChat = chats.find(
-                  (chat) =>
+                  (chat: Chat) =>
                     !chat.isGroup &&
                     chat.members.includes(this.userName!) &&
                     chat.members.includes(contact)

@@ -11,8 +11,9 @@ import { SocketService } from 'src/app/main-page/service/socket.service';
 import { Chat } from '../../type/chat.type';
 import { MessagesDto } from '../../type/messages.dto';
 import { STORAGE_KEYS } from '../../constants';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 import { SocketMessage } from '../../type/socket-message';
+import { User } from '../../type/user.type';
 
 @Component({
   selector: 'app-chat',
@@ -75,7 +76,7 @@ export class ChatComponent implements OnInit {
         this.chat.name = res.name;
       } else {
         const other: string | undefined = res.members.find(
-          (m) => m !== this.userName
+          (m: string) => m !== this.userName
         );
         this.otherMember = other || '';
         this.chat.name = other || 'Private Chat';
@@ -85,7 +86,7 @@ export class ChatComponent implements OnInit {
       this.updateActiveUsersInChat();
     });
 
-    this.apiService.getMessagesByChatId(this.chat._id).subscribe((res) => {
+    this.apiService.getMessagesByChatId(this.chat._id).subscribe((res: MessagesDto[]) => {
       this.messages = res.map((msg: MessagesDto) => ({
         _id: msg._id,
         sender: msg.sender,
@@ -181,14 +182,14 @@ export class ChatComponent implements OnInit {
   }
 
   private createSeeUsers(): void {
-    this.apiService.getChatById(this.chat._id).subscribe((u) => {
+    this.apiService.getChatById(this.chat._id).subscribe((u: Chat) => {
       this.seeUsers = u.members;
     });
   }
 
   private createAddUsers(): void {
-    this.apiService.getUserByUserName(this.userName).subscribe((u) => {
-      this.addUsers = u.contacts.filter((c) => !this.chat.members.includes(c));
+    this.apiService.getUserByUserName(this.userName).subscribe((u: User) => {
+      this.addUsers = u.contacts.filter((c: string) => !this.chat.members.includes(c));
     });
   }
 
@@ -206,7 +207,7 @@ export class ChatComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, leave group!',
       cancelButtonText: 'Cancel',
-    }).then((result) => {
+    }).then((result: SweetAlertResult) => {
       if (result.isConfirmed) {
         this.apiService
           .removeMemberFromChat(this.chat._id, this.userName)
@@ -219,7 +220,7 @@ export class ChatComponent implements OnInit {
                   `${this.userName} left the group`
                 )
                 .subscribe({
-                  next: (res) => {
+                  next: (res: MessagesDto) => {
                     this.emitSocketMessage(res);
                     this.newMessage = '';
                   },
@@ -254,7 +255,7 @@ export class ChatComponent implements OnInit {
 
   public handleAddContact(userName: string): void {
     this.apiService.addMemberToChat(this.chat._id, userName).subscribe({
-      next: (res) => {
+      next: (res: Chat) => {
         this.chat = res;
         this.refreshUsersLists();
       },
@@ -264,7 +265,7 @@ export class ChatComponent implements OnInit {
 
   public handleRemoveUser(userName: string): void {
     this.apiService.removeMemberFromChat(this.chat._id, userName).subscribe({
-      next: (res) => {
+      next: (res: Chat) => {
         this.chat = res;
         this.refreshUsersLists();
 
